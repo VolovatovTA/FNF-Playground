@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+    <item android:drawable="@drawable/boyfriend_up_00"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_01"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_02"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_03"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_04"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_05"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_06"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_07"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_08"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_09"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_10"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_11"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_12"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_13"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_up_14"
+        android:duration="@integer/duration_short" />
+</animation-list>

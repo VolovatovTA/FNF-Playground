@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.fnfplayground.databinding.FragmentFullscreenChooseCharacterBinding
+import java.util.*
+import kotlin.concurrent.fixedRateTimer
 
 
 class FullscreenFragmentChooseCharacter : Fragment() {
@@ -45,7 +47,13 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         val gridView = _binding?.GridCharacters
         gridView?.adapter = myAdapter
         gridView?.setOnItemClickListener{ _, _, position, _ ->
-            Toast.makeText(requireContext(), "pick on $position", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "pick on $position", Toast.LENGTH_SHORT).show()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainerView, CharacterActionsFragment
+                .newInstance(Character(UUID(1,2),-1, -1, -1, -1, -1, -1, -1, -1, -1, -1)))
+            transaction.addToBackStack("1")
+            transaction.commit()
+
 
         }
 
@@ -53,16 +61,12 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
     }
 
     override fun onPause() {
         super.onPause()
-        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
-        // Clear the systemUiVisibility flag
-        activity?.window?.decorView?.systemUiVisibility = 0
     }
 
     override fun onDestroy() {

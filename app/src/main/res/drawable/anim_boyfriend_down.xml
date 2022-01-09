@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+    <item android:drawable="@drawable/boyfriend_down_00"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_01"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_02"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_03"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_04"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_05"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_06"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_07"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_08"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_09"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_10"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_11"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_12"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_13"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_14"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_15"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_16"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_17"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_18"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_19"
+        android:duration="@integer/duration_short" />
+    <item android:drawable="@drawable/boyfriend_down_20"
+        android:duration="@integer/duration_short" />
+</animation-list>

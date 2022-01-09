@@ -16,7 +16,6 @@ class CharactersImageAdapter(private val context: Context) : BaseAdapter() {
     }
     override fun getCount(): Int {
         return arrayListCharactersImage.size
-//        return 5
     }
 
     override fun getItem(position: Int): Any {
@@ -30,8 +29,8 @@ class CharactersImageAdapter(private val context: Context) : BaseAdapter() {
     override fun getView(position: Int, p1: View?, p2: ViewGroup?): View {
         val imageView = ImageView(context)
         imageView.setImageResource(arrayListCharactersImage[position])
-        imageView.layoutParams = FrameLayout.LayoutParams(85, 85)
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 150)
+        imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
         return imageView
     }

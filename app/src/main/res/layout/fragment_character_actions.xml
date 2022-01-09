@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CharacterActionsFragment"
+    android:background="@drawable/stageback">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/stagecurtains">
+
+        <ImageView
+            android:id="@+id/CharacterImageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButtonLeft"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginHorizontal="40dp"
+            android:background="#0000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/left_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonRight"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonRight"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonRight" />
+
+        <ImageButton
+            android:id="@+id/imageButtonRight"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="4dp"
+            android:background="#0000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/right_arrow"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonDown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonUp" />
+
+        <ImageButton
+            android:id="@+id/imageButtonDown"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="32dp"
+            android:background="#0000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/down_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageButtonRight"
+            app:layout_constraintStart_toStartOf="@+id/imageButtonLeft" />
+
+        <ImageButton
+            android:id="@+id/imageButtonUp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginVertical="40dp"
+            android:background="#0000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/up_arrow"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonDown"
+            app:layout_constraintEnd_toEndOf="@+id/imageButtonRight"
+            app:layout_constraintStart_toStartOf="@+id/imageButtonLeft" />
+
+        <ImageButton
+            android:id="@+id/imageButtonB"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:background="#0000"
+            android:layout_marginHorizontal="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/b_btn"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonLeft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonLeft" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
