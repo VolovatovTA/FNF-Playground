@@ -62,19 +62,19 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
 //            drawable[nameAction] = resources.getDrawable(resources.getIdentifier("anim_boyfriend_$nameAction", "", "drawable"))
 //
 //        }
-//        drawable["idle"] = resources.getDrawable(R.drawable.anim_boyfriend_idle)
-        val myAssetManager: AssetManager =
-            requireContext().getAssets()
-
-        try {
-            val Files = myAssetManager.list("") // массив имён файлов
-            Log.d("DebugAnimation", Files!![0].toString() + Files[1].toString())
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        Log.d("DebugAnimation", (requireContext().assets.open("1")).bufferedReader().use {
-            it.readText()})
-        drawable["idle"] = Drawable.createFromStream(requireContext().assets.open("anim_boyfriend_idle"), null)
+//        val myAssetManager: AssetManager =
+//            requireContext().getAssets()
+//
+//        try {
+//            val Files = myAssetManager.list("") // массив имён файлов
+//            Log.d("DebugAnimation", Files!![0].toString() + Files[1].toString())
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        Log.d("DebugAnimation", (requireContext().assets.open("1")).bufferedReader().use {
+//            it.readText()})
+//        drawable["idle"] = Drawable.createFromStream(requireContext().assets.open("anim_boyfriend_idle"), null)
+        drawable["idle"] = resources.getDrawable(R.drawable.anim_boyfriend_idle)
 
         drawable["left"] = resources.getDrawable(R.drawable.anim_boyfriend_left)
         drawable["right"] = resources.getDrawable(R.drawable.anim_boyfriend_right)
