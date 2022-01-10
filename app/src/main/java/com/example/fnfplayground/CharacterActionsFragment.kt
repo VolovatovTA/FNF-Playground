@@ -1,19 +1,29 @@
 package com.example.fnfplayground
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.get
 import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
-import java.util.*
 import kotlin.properties.Delegates
+import android.widget.Toast
+
+
+import android.content.res.AssetManager
+import java.io.IOException
+
 
 private const val ARG_CHARACTER = "character id"
 
@@ -27,12 +37,9 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     var idUp by Delegates.notNull<Int>()
     var idRight by Delegates.notNull<Int>()
     lateinit var currentAnimation: AnimationDrawable
-    lateinit var drawableIdle: Drawable
-    lateinit var drawableLeft: Drawable
-    lateinit var drawableRight: Drawable
-    lateinit var drawableUp: Drawable
-    lateinit var drawableDown: Drawable
-    lateinit var drawableB: Drawable
+    lateinit var drawable: MutableMap<String, Drawable>
+    val listOfActions = listOf("left", "right", "up", "down", "b", "idle" )
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,23 +57,76 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     ): View? {
         binding = FragmentCharacterActionsBinding.inflate(inflater, container, false)
 
-        drawableIdle = resources.getDrawable(R.drawable.anim_boyfriend_idle)
-        drawableLeft = resources.getDrawable(R.drawable.anim_boyfriend_left)
-        drawableDown = resources.getDrawable(R.drawable.anim_boyfriend_down)
-        drawableUp = resources.getDrawable(R.drawable.anim_boyfriend_up)
-        drawableRight = resources.getDrawable(R.drawable.anim_boyfriend_right)
-        drawableB = resources.getDrawable(R.drawable.anim_boyfriend_b)
-        currentAnimation = drawableIdle as AnimationDrawable
+        drawable = mutableMapOf()
+//        for (nameAction in listOfActions){
+//            drawable[nameAction] = resources.getDrawable(resources.getIdentifier("anim_boyfriend_$nameAction", "", "drawable"))
+//
+//        }
+//        drawable["idle"] = resources.getDrawable(R.drawable.anim_boyfriend_idle)
+        val myAssetManager: AssetManager =
+            requireContext().getAssets()
 
+        try {
+            val Files = myAssetManager.list("") // массив имён файлов
+            Log.d("DebugAnimation", Files!![0].toString() + Files[1].toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        Log.d("DebugAnimation", (requireContext().assets.open("1")).bufferedReader().use {
+            it.readText()})
+        drawable["idle"] = Drawable.createFromStream(requireContext().assets.open("anim_boyfriend_idle"), null)
 
+        drawable["left"] = resources.getDrawable(R.drawable.anim_boyfriend_left)
+        drawable["right"] = resources.getDrawable(R.drawable.anim_boyfriend_right)
+        drawable["up"] = resources.getDrawable(R.drawable.anim_boyfriend_up)
+        drawable["down"] = resources.getDrawable(R.drawable.anim_boyfriend_down)
+        drawable["b"] = resources.getDrawable(R.drawable.anim_boyfriend_b)
+
+        currentAnimation = drawable["idle"] as AnimationDrawable
+//        val d1 = resources.getDrawable(R.drawable.boyfriend_down_00)
+//        val d2 = resources.getDrawable(R.drawable.down01)
+//        compare2drawable(d1, d2)
 
         return binding.root
+    }
+
+    private fun compare2drawable(d1: Drawable, d2: Drawable) {
+
+
+        val r = Runnable {
+            var dif : Array<Array<Int>> = emptyArray()
+
+            for(i in 0 until d1.toBitmap().width){
+                var array = arrayOf<Int>()
+                for (j in 0 until d1.toBitmap().height){
+                    array += d1.toBitmap()[i,j] - d2.toBitmap()[i,j]
+                }
+                dif += array
+            }
+            Log.d("DebugAnimation", "calculate")
+
+            var res = ""
+            for(i in 0 until d1.toBitmap().width){
+                var res1 = ""
+                for (j in 0 until d1.toBitmap().height){
+                    res1 += dif[i][j]
+                }
+                res += res1
+
+                res += "\n"
+            }
+            Log.d("DebugAnimation", "res = $res")
+
+        }
+        val thread = Thread(r)
+
+        thread.start()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.CharacterImageView.background = drawableIdle
+        binding.CharacterImageView.background = drawable["idle"]
         currentAnimation.start()
         binding.imageButtonLeft.setOnTouchListener(this)
         binding.imageButtonRight.setOnTouchListener(this)
@@ -104,45 +164,45 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         sp.play(idLeft, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(drawableLeft)
+                        changeAnimation(drawable["left"]!!)
                     }
-                    MotionEvent.ACTION_UP -> {changeAnimation(drawableIdle)}
+                    MotionEvent.ACTION_UP -> {changeAnimation(drawable["idle"]!!)}
                 }
             }
             R.id.imageButtonDown -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         sp.play(idDown, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(drawableDown)
+                        changeAnimation(drawable["down"]!!)
                     }
-                    MotionEvent.ACTION_UP -> {changeAnimation(drawableIdle)}
+                    MotionEvent.ACTION_UP -> {changeAnimation(drawable["idle"]!!)}
                 }
             }
             R.id.imageButtonRight -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         sp.play(idRight, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(drawableRight)
+                        changeAnimation(drawable["right"]!!)
                     }
-                    MotionEvent.ACTION_UP -> {changeAnimation(drawableIdle)}
+                    MotionEvent.ACTION_UP -> {changeAnimation(drawable["idle"]!!)}
                 }
             }
             R.id.imageButtonUp -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         sp.play(idUp, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(drawableUp)
+                        changeAnimation(drawable["up"]!!)
                     }
-                    MotionEvent.ACTION_UP -> {changeAnimation(drawableIdle)}
+                    MotionEvent.ACTION_UP -> {changeAnimation(drawable["idle"]!!)}
                 }
             }
             R.id.imageButtonB -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         sp.play(idB, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(drawableB)
+                        changeAnimation(drawable["b"]!!)
                     }
-                    MotionEvent.ACTION_UP -> {changeAnimation(drawableIdle)}
+                    MotionEvent.ACTION_UP -> {changeAnimation(drawable["idle"]!!)}
                 }
             }
         }

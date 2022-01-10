@@ -32,6 +32,19 @@ android {
     buildFeatures {
         viewBinding true
     }
+//    sourceSets {
+//        main {
+//            res.srcDirs = [
+//                    'src/main/res-main',
+//                    'src/main/res-screen/about',
+//                    'src/main/res-screen/chat',
+//                    'src/main/res-screen/event-detail',
+//                    'src/main/res-screen/event-list',
+//                    'src/main/res-screen/home',
+//                    'src/main/res-screen/login',
+//            ]
+//        }
+//    }
 }
 
 dependencies {

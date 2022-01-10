@@ -42,15 +42,22 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
         val myAdapter = CharactersImageAdapter(requireContext())
         val gridView = _binding?.GridCharacters
         gridView?.adapter = myAdapter
-        gridView?.setOnItemClickListener{ _, _, position, _ ->
+        gridView?.setOnItemClickListener { _, _, position, _ ->
 //            Toast.makeText(requireContext(), "pick on $position", Toast.LENGTH_SHORT).show()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainerView, CharacterActionsFragment
-                .newInstance(Character(UUID(1,2),-1, -1, -1, -1, -1, -1, -1, -1, -1, -1)))
+            transaction.replace(
+                R.id.fragmentContainerView, CharacterActionsFragment
+                    .newInstance(
+                        Character(
+                            UUID(1, 2), -1, -1,
+                            -1, -1, -1, -1, -1,
+                            -1, -1, -1
+                        )
+                    )
+            )
             transaction.addToBackStack("1")
             transaction.commit()
 
@@ -74,9 +81,6 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         fullscreenContent = null
         fullscreenContentControls = null
     }
-
-
-
 
 
     override fun onDestroyView() {
