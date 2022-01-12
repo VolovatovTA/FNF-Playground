@@ -1,27 +1,24 @@
 package com.example.fnfplayground
 
+
 import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.get
+import androidx.fragment.app.Fragment
 import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
 import kotlin.properties.Delegates
-
-
-import android.content.res.AssetManager
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import java.io.IOException
 
 
 private const val ARG_CHARACTER = "character name"
@@ -58,23 +55,6 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
         binding = FragmentCharacterActionsBinding.inflate(inflater, container, false)
 
         animations = mutableMapOf()
-
-        // 0 - idle
-        // 1 - spec
-        // 2 - left
-        // 3 - right
-        // 4 - up
-        // 5 - down
-//        Log.d("DebugAnimation",
-//            "images/characters/$character"
-//        )
-//        for (i in requireContext().assets.list("images/characters/$character")!!){
-//            Log.d("DebugAnimation",
-//                i
-//            )
-//        }
-
-
 
         val listOfActions =
             requireContext().assets.list("images/characters/$character") as Array<String>
@@ -127,12 +107,6 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     }
 
     private fun sortList(list: Array<String>) : MutableMap<String, String> {
-        // 0 - idle
-        // 1 - spec
-        // 2 - left
-        // 3 - right
-        // 4 - up
-        // 5 - down
 
         val sortedList : MutableMap<String, String> = HashMap(list.size)
         for (i in list) {
@@ -201,7 +175,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.CharacterImageView.background = currentAnimation
+        binding.CharacterImageView.setImageDrawable(currentAnimation)
         currentAnimation.start()
         binding.imageButtonLeft.setOnTouchListener(this)
         binding.imageButtonRight.setOnTouchListener(this)
@@ -288,43 +262,14 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
             }
         }
 
-//        when (p0!!.id) {
-//            R.id.imageButtonLeft -> {
-//                currentAnimation.stop()
-//                currentAnimation = drawableLeft as AnimationDrawable
-//                currentAnimation.start()
-//                sp.play(idLeft, 1F, 1F, 1, 0, 1F)
-//            }
-//            R.id.imageButtonRight -> {
-//
-//                sp.play(idRight, 1F, 1F, 1, 0, 1F)
-//            }
-//            R.id.imageButtonUp -> {
-//
-//                sp.play(idUp, 1F, 1F, 1, 0, 1F)
-//            }
-//            R.id.imageButtonDown -> {
-//
-//                sp.play(idDown, 1F, 1F, 1, 0, 1F)
-//            }
-//            R.id.imageButton2 -> {
-//
-//                sp.play(idB, 1F, 1F, 1, 0, 1F)
-//            }
-//
-//
-//        }
-//        currentAnimation.stop()
-//        currentAnimation = drawableIdle as AnimationDrawable
-//        currentAnimation.start()
         return true
     }
 
-    private fun changeAnimation(newDrawable: Drawable?) {
+    private fun changeAnimation(newDrawable: AnimationDrawable?) {
         if (newDrawable != null){
             currentAnimation.stop()
-            binding.CharacterImageView.background = newDrawable
-            currentAnimation = newDrawable as AnimationDrawable
+            binding.CharacterImageView.setImageDrawable(newDrawable)
+            currentAnimation = newDrawable
             currentAnimation.start()
         }
 

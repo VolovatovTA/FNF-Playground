@@ -38,7 +38,7 @@ class IntroFragment : Fragment() {
                 animation.addFrame(BitmapDrawable(resources, bitmap), 60)
             }
         }
-        binding.imageView.background = animation
+        binding.imageView.setImageDrawable(animation)
         animation.start()
         binding.button.setOnClickListener {
             val transaction = requireActivity().supportFragmentManager.beginTransaction()

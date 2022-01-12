@@ -8,7 +8,7 @@
     android:background="@drawable/stageback">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="120dp"
         android:layout_gravity="bottom"
         android:background="@drawable/stagefront"/>
 
@@ -19,7 +19,7 @@
 
         <ImageView
             android:id="@+id/CharacterImageView"
-            android:layout_width="170dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/mom"
@@ -33,11 +33,12 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginHorizontal="40dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/left_arrow"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/imageButtonRight"
             app:layout_constraintEnd_toStartOf="@+id/imageButtonRight"
-            app:layout_constraintTop_toTopOf="@+id/imageButtonRight" />
+            app:layout_constraintTop_toTopOf="@+id/imageButtonRight"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/imageButtonRight"
@@ -45,44 +46,48 @@
             android:layout_height="70dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="4dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/right_arrow"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toTopOf="@+id/imageButtonDown"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonUp" />
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonUp"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/imageButtonDown"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginBottom="32dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/down_arrow"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageButtonRight"
-            app:layout_constraintStart_toStartOf="@+id/imageButtonLeft" />
+            app:layout_constraintStart_toStartOf="@+id/imageButtonLeft"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/imageButtonUp"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginVertical="40dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/up_arrow"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/imageButtonDown"
             app:layout_constraintEnd_toEndOf="@+id/imageButtonRight"
-            app:layout_constraintStart_toStartOf="@+id/imageButtonLeft" />
+            app:layout_constraintStart_toStartOf="@+id/imageButtonLeft"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/imageButtonB"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_marginHorizontal="40dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/b_btn"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/imageButtonLeft"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageButtonLeft" />
+            app:layout_constraintTop_toTopOf="@+id/imageButtonLeft"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
