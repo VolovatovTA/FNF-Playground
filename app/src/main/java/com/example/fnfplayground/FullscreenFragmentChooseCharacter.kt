@@ -1,17 +1,16 @@
 package com.example.fnfplayground
 
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
 import com.example.fnfplayground.databinding.FragmentFullscreenChooseCharacterBinding
 import java.util.*
-import kotlin.concurrent.fixedRateTimer
+
+import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow.OnScrollPositionListener
 
 
 class FullscreenFragmentChooseCharacter : Fragment() {
@@ -43,26 +42,34 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
 
         val myAdapter = CharactersImageAdapter(requireContext())
-        val gridView = _binding?.GridCharacters
-        gridView?.adapter = myAdapter
-        gridView?.setOnItemClickListener { _, _, position, _ ->
+
+        val mCoverFlow = binding.coverFlowOfficialCharacters
+        val mCoverFlow2 = binding.coverFlowModCharacters
+        mCoverFlow.adapter = myAdapter
+        mCoverFlow2.adapter = myAdapter
+        mCoverFlow.setReflectionOpacity(0)
+
+        mCoverFlow.setOnItemClickListener { parent, view, position, id ->
 //            Toast.makeText(requireContext(), "pick on $position", Toast.LENGTH_SHORT).show()
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(
-                R.id.fragmentContainerView, CharacterActionsFragment
-                    .newInstance(
-                        Character(
-                            UUID(1, 2), -1, -1,
-                            -1, -1, -1, -1, -1,
-                            -1, -1, -1
-                        )
-                    )
-            )
+            Log.d("DebugAnimation", myAdapter.arrayListCharactersImage[position].split(".")[0])
+
+            transaction.replace(R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(myAdapter.arrayListCharactersImage[position].split(".")[0]))
+
             transaction.addToBackStack("1")
             transaction.commit()
-
-
         }
+        mCoverFlow.setOnScrollPositionListener(object : OnScrollPositionListener {
+            override fun onScrolledToPosition(position: Int) {
+//                Toast.makeText(requireContext(), "scrolled pos = $position", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onScrolling() {
+
+//                Toast.makeText(requireContext(), "scrolling", Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
     }
 
