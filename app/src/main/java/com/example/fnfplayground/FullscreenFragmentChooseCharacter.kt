@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
 import com.example.fnfplayground.databinding.FragmentFullscreenChooseCharacterBinding
-import java.util.*
 
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow.OnScrollPositionListener
 
@@ -41,45 +39,43 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val myAdapter = CharactersImageAdapter(requireContext())
+        val adapterOfficialCharacters = OfficialCharactersIconsAdapter(requireContext())
+        val adapterModCharacters = ModCharactersIconsAdapter(requireContext())
 
-        val mCoverFlow = binding.coverFlowOfficialCharacters
-        val mCoverFlow2 = binding.coverFlowModCharacters
-        mCoverFlow.adapter = myAdapter
-        mCoverFlow2.adapter = myAdapter
-        mCoverFlow.setReflectionOpacity(0)
+        val coverFlowOfficialCharacter = binding.coverFlowOfficialCharacters
+        val coverFlowModCharacter = binding.coverFlowModCharacters
 
-        mCoverFlow.setOnItemClickListener { parent, view, position, id ->
-//            Toast.makeText(requireContext(), "pick on $position", Toast.LENGTH_SHORT).show()
+        coverFlowOfficialCharacter.adapter = adapterOfficialCharacters
+        coverFlowModCharacter.adapter = adapterModCharacters
+
+        coverFlowOfficialCharacter.setReflectionOpacity(0)
+
+        coverFlowOfficialCharacter.setOnItemClickListener { _, _, position, _ ->
+
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            Log.d("DebugAnimation", myAdapter.arrayListCharactersImage[position].split(".")[0])
+            Log.d("DebugAnimation", "name of char = ${adapterOfficialCharacters
+                .arrayListCharactersFolders[position].split(".")[0]}")
 
-            transaction.replace(R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(myAdapter.arrayListCharactersImage[position].split(".")[0]))
+            transaction.replace(R.id.fragmentContainerView2, CharacterActionsFragment
+                .newInstance(adapterOfficialCharacters.arrayListCharactersFolders[position]
+                    .split(".")[0], false))
 
             transaction.addToBackStack("1")
             transaction.commit()
         }
-        mCoverFlow.setOnScrollPositionListener(object : OnScrollPositionListener {
-            override fun onScrolledToPosition(position: Int) {
-//                Toast.makeText(requireContext(), "scrolled pos = $position", Toast.LENGTH_SHORT).show()
-            }
+        coverFlowModCharacter.setOnItemClickListener { _, _, position, _ ->
 
-            override fun onScrolling() {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            Log.d("DebugAnimation", "name of char = ${adapterModCharacters
+                .arrayListCharactersFolders[position].split(".")[0]}")
 
-//                Toast.makeText(requireContext(), "scrolling", Toast.LENGTH_SHORT).show()
-            }
-        })
+            transaction.replace(R.id.fragmentContainerView2, CharacterActionsFragment
+                .newInstance(adapterModCharacters.arrayListCharactersFolders[position]
+                    .split(".")[0], true))
 
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    override fun onPause() {
-        super.onPause()
+            transaction.addToBackStack("1")
+            transaction.commit()
+        }
 
     }
 

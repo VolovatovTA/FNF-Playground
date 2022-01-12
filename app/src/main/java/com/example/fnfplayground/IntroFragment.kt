@@ -4,7 +4,6 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,13 +26,13 @@ class IntroFragment : Fragment() {
 
         binding = FragmentIntroBinding.inflate(inflater, container, false)
         val fileNamesForOneAnim =
-            requireContext().assets.list("images/logo bumpin")
+            requireContext().assets.list("shared/logo bumpin")
         val animation = AnimationDrawable()
         animation.isOneShot = false
         if (fileNamesForOneAnim != null) {
             for (i in fileNamesForOneAnim){
                 val inputStream = requireContext().assets
-                    .open("images/logo bumpin/$i")
+                    .open("shared/logo bumpin/$i")
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 animation.addFrame(BitmapDrawable(resources, bitmap), 60)
             }

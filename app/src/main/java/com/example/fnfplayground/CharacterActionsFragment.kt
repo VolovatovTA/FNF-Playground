@@ -2,12 +2,8 @@ package com.example.fnfplayground
 
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.media.AudioManager
-import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,31 +14,25 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.get
 import androidx.fragment.app.Fragment
 import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
-import kotlin.properties.Delegates
+import java.io.IOException
 
 
 private const val ARG_CHARACTER = "character name"
+private const val ARG_MODE = "mode flag"
 
 
 class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     private var character: String? = null
-
-    val sp = SoundPool(2, AudioManager.STREAM_MUSIC, 1)
-    var idB by Delegates.notNull<Int>()
-    var idLeft by Delegates.notNull<Int>()
-    var idDown by Delegates.notNull<Int>()
-    var idUp by Delegates.notNull<Int>()
-    var idRight by Delegates.notNull<Int>()
-    private lateinit var soundsId: Array<Int>
-    private lateinit var currentAnimation: AnimationDrawable
-    private lateinit var animations: MutableMap<String, AnimationDrawable>
-    private lateinit var sortedList: MutableMap<String, String>
+    private var mode: Boolean? = null
+        private lateinit var currentAnimation: AnimationDrawable
+    private lateinit var creatorCharacterData: CreatorCharacterData
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             character = it.getString(ARG_CHARACTER)
+            mode = it.getBoolean(ARG_MODE)
         }
     }
 
@@ -54,94 +44,15 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     ): View {
         binding = FragmentCharacterActionsBinding.inflate(inflater, container, false)
 
-        animations = mutableMapOf()
+        creatorCharacterData = CreatorCharacterData(requireContext(), character!!, mode!!)
 
-        val listOfActions =
-            requireContext().assets.list("images/characters/$character") as Array<String>
+        currentAnimation = creatorCharacterData.animations[ActionsCharacter.IDLE]?:
+        throw IOException("You can't create a character without idle animation")
 
-        sortedList = sortList(listOfActions)
-        for (i in sortedList){
-            Log.d("DebugAnimation",
-                "f = ${i.toPair().first}; s = ${i.toPair().second}"
-            )
-        }
-
-        for (nameAction in sortedList) {
-            // массив имён картинок для одной анимации
-            val fileNamesForOneAnim =
-                requireContext().assets.list("images/characters/$character/${nameAction.toPair().second}")
-            animations[nameAction.toPair().second] = AnimationDrawable()
-            animations[nameAction.toPair().second]?.isOneShot = nameAction.toPair().first != "idle"
-            Log.d("DebugAnimation",
-                "sortedList[nameAction.toPair().second] = ${nameAction.toPair().first}"
-            )
-            Log.d("DebugAnimation",
-                "path = images/characters/$character/${nameAction.toPair().second}"
-            )
-            if (fileNamesForOneAnim != null) {
-                var nextNumberOfPhoto = fileNamesForOneAnim[0]
-                for (fileName in fileNamesForOneAnim) {
-
-                    Log.d("DebugAnimation",
-                        "fileName = $fileName"
-                    )
-                    val duration_coefficiemt = nextNumberOfPhoto.split(".")[0].takeLast(4).toInt() - fileName.split(".")[0].takeLast(4).toInt()
-
-                    val inputStream = requireContext().assets
-                        .open("images/characters/$character/${nameAction.toPair().second}/$fileName")
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-
-                    animations[nameAction.toPair().second]?.addFrame(
-                        BitmapDrawable(resources, bitmap)
-                        , 30*duration_coefficiemt
-                    )
-                    nextNumberOfPhoto = fileName
-                }
-
-            }
-        }
-
-
-
-        currentAnimation = animations[sortedList["idle"]]?:
-        animations[sortedList["spec"]]?:
-                AnimationDrawable()
-        Log.d("DebugAnimation", "currentAnimation.numberOfFrames = ${currentAnimation.numberOfFrames}")
         return binding.root
     }
 
-    private fun sortList(list: Array<String>) : MutableMap<String, String> {
 
-        val sortedList : MutableMap<String, String> = HashMap(list.size)
-        for (i in list) {
-            if (i.contains("idle") || i.contains("IDLE") || i.contains("Idle")) {
-                sortedList["idle"]= i
-                Log.d("DebugAnimation", i)
-
-            }
-            if (i.contains("spec") || i.contains("SPEC") || i.contains("Spec")) {
-                sortedList["spec"] = i
-                Log.d("DebugAnimation", i)
-
-            }
-            if (i.contains("left") || i.contains("LEFT") || i.contains("Left")) {
-                sortedList["left"] = i
-            }
-            if (i.contains("right") || i.contains("RIGHT") || i.contains("Right")) {
-                sortedList["right"] = i
-            }
-            if (i.contains("up") || i.contains("UP") || i.contains("Up")) {
-                sortedList["up"] = i
-            }
-            if (i.contains("down") || i.contains("DOWN") || i.contains("Down")) {
-                sortedList["down"] = i
-            }
-
-        }
-
-        return sortedList
-
-    }
 
     private fun compare2drawable(d1: Drawable, d2: Drawable) {
 
@@ -185,23 +96,19 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
         binding.imageButtonRight.setOnTouchListener(this)
         binding.imageButtonDown.setOnTouchListener(this)
         binding.imageButtonUp.setOnTouchListener(this)
-//        binding.imageButtonB.setOnTouchListener(this)
+        binding.imageButtonB.setOnTouchListener(this)
 
-        idB = sp.load(requireContext(), R.raw.b, 1)
-        idLeft = sp.load(requireContext(), R.raw.left, 1)
-        idRight = sp.load(requireContext(), R.raw.right, 1)
-        idUp = sp.load(requireContext(), R.raw.up, 1)
-        idDown = sp.load(requireContext(), R.raw.down, 1)
 
 
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance(nameCharacter: String, isItMode: Boolean) =
             CharacterActionsFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_CHARACTER, param1)
+                    putString(ARG_CHARACTER, nameCharacter)
+                    putBoolean(ARG_MODE, isItMode)
                 }
             }
     }
@@ -214,13 +121,13 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        sp.play(idLeft, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(animations[sortedList["left"]])
+                        creatorCharacterData.play(ActionsCharacter.LEFT)
+                        changeAnimation(ActionsCharacter.LEFT)
                     }
                     MotionEvent.ACTION_UP -> {
                         p0.isPressed = !p0.isPressed
 
-                        changeAnimation(animations[sortedList["idle"]])
+                        changeAnimation(ActionsCharacter.IDLE)
                     }
                 }
             }
@@ -229,13 +136,13 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
 
-                        sp.play(idDown, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(animations[sortedList["down"]])
+                        creatorCharacterData.play(ActionsCharacter.DOWN)
+                        changeAnimation(ActionsCharacter.DOWN)
                     }
                     MotionEvent.ACTION_UP -> {
                         p0.isPressed = !p0.isPressed
 
-                        changeAnimation(animations[sortedList["idle"]])
+                        changeAnimation(ActionsCharacter.IDLE)
                     }
                 }
             }
@@ -243,12 +150,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        sp.play(idRight, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(animations[sortedList["right"]])
+                        creatorCharacterData.play(ActionsCharacter.RIGHT)
+                        changeAnimation(ActionsCharacter.RIGHT)
                     }
                     MotionEvent.ACTION_UP -> {
                         p0.isPressed = !p0.isPressed
-                        changeAnimation(animations[sortedList["idle"]])
+                        changeAnimation(ActionsCharacter.IDLE)
                     }
                 }
             }
@@ -256,12 +163,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        sp.play(idUp, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(animations[sortedList["up"]])
+                        creatorCharacterData.play(ActionsCharacter.UP)
+                        changeAnimation(ActionsCharacter.UP)
                     }
                     MotionEvent.ACTION_UP -> {
                         p0.isPressed = !p0.isPressed
-                        changeAnimation(animations[sortedList["idle"]])
+                        changeAnimation(ActionsCharacter.IDLE)
                     }
                 }
             }
@@ -269,12 +176,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        sp.play(idB, 1F, 1F, 1, 0, 1F)
-                        changeAnimation(animations[sortedList["spec"]])
+                        creatorCharacterData.play(ActionsCharacter.SPEC)
+                        changeAnimation(ActionsCharacter.SPEC)
                     }
                     MotionEvent.ACTION_UP -> {
                         p0.isPressed = !p0.isPressed
-                        changeAnimation(animations[sortedList["idle"]])
+                        changeAnimation(ActionsCharacter.IDLE)
                     }
                 }
             }
@@ -283,11 +190,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
         return true
     }
 
-    private fun changeAnimation(newDrawable: AnimationDrawable?) {
-        if (newDrawable != null){
+    private fun changeAnimation(action: ActionsCharacter) {
+
+        if (creatorCharacterData.animations[action] != null){
             currentAnimation.stop()
-            binding.CharacterImageView.setImageDrawable(newDrawable)
-            currentAnimation = newDrawable
+            currentAnimation = creatorCharacterData.animations[action]!!
+            binding.CharacterImageView.setImageDrawable(currentAnimation)
             currentAnimation.start()
         }
 
