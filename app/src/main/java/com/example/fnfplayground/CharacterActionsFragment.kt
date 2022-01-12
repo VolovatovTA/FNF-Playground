@@ -66,32 +66,36 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
             )
         }
 
-
-
         for (nameAction in sortedList) {
             // массив имён картинок для одной анимации
             val fileNamesForOneAnim =
                 requireContext().assets.list("images/characters/$character/${nameAction.toPair().second}")
             animations[nameAction.toPair().second] = AnimationDrawable()
-            animations[nameAction.toPair().second]?.isOneShot = false
+            animations[nameAction.toPair().second]?.isOneShot = nameAction.toPair().first != "idle"
             Log.d("DebugAnimation",
-                "anim = $animations"
+                "sortedList[nameAction.toPair().second] = ${nameAction.toPair().first}"
             )
             Log.d("DebugAnimation",
                 "path = images/characters/$character/${nameAction.toPair().second}"
             )
             if (fileNamesForOneAnim != null) {
+                var nextNumberOfPhoto = fileNamesForOneAnim[0]
                 for (fileName in fileNamesForOneAnim) {
+
                     Log.d("DebugAnimation",
                         "fileName = $fileName"
                     )
+                    val duration_coefficiemt = nextNumberOfPhoto.split(".")[0].takeLast(4).toInt() - fileName.split(".")[0].takeLast(4).toInt()
+
                     val inputStream = requireContext().assets
                         .open("images/characters/$character/${nameAction.toPair().second}/$fileName")
                     val bitmap = BitmapFactory.decodeStream(inputStream)
+
                     animations[nameAction.toPair().second]?.addFrame(
                         BitmapDrawable(resources, bitmap)
-                        , 30
+                        , 30*duration_coefficiemt
                     )
+                    nextNumberOfPhoto = fileName
                 }
 
             }
@@ -181,7 +185,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
         binding.imageButtonRight.setOnTouchListener(this)
         binding.imageButtonDown.setOnTouchListener(this)
         binding.imageButtonUp.setOnTouchListener(this)
-        binding.imageButtonB.setOnTouchListener(this)
+//        binding.imageButtonB.setOnTouchListener(this)
 
         idB = sp.load(requireContext(), R.raw.b, 1)
         idLeft = sp.load(requireContext(), R.raw.left, 1)
@@ -204,14 +208,18 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
 
 
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-        when (p0!!.id) {
+        p0!!.performClick()
+        when (p0.id) {
             R.id.imageButtonLeft -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        p0.isPressed = !p0.isPressed
                         sp.play(idLeft, 1F, 1F, 1, 0, 1F)
                         changeAnimation(animations[sortedList["left"]])
                     }
                     MotionEvent.ACTION_UP -> {
+                        p0.isPressed = !p0.isPressed
+
                         changeAnimation(animations[sortedList["idle"]])
                     }
                 }
@@ -219,10 +227,14 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
             R.id.imageButtonDown -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        p0.isPressed = !p0.isPressed
+
                         sp.play(idDown, 1F, 1F, 1, 0, 1F)
                         changeAnimation(animations[sortedList["down"]])
                     }
                     MotionEvent.ACTION_UP -> {
+                        p0.isPressed = !p0.isPressed
+
                         changeAnimation(animations[sortedList["idle"]])
                     }
                 }
@@ -230,10 +242,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
             R.id.imageButtonRight -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        p0.isPressed = !p0.isPressed
                         sp.play(idRight, 1F, 1F, 1, 0, 1F)
                         changeAnimation(animations[sortedList["right"]])
                     }
                     MotionEvent.ACTION_UP -> {
+                        p0.isPressed = !p0.isPressed
                         changeAnimation(animations[sortedList["idle"]])
                     }
                 }
@@ -241,10 +255,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
             R.id.imageButtonUp -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        p0.isPressed = !p0.isPressed
                         sp.play(idUp, 1F, 1F, 1, 0, 1F)
                         changeAnimation(animations[sortedList["up"]])
                     }
                     MotionEvent.ACTION_UP -> {
+                        p0.isPressed = !p0.isPressed
                         changeAnimation(animations[sortedList["idle"]])
                     }
                 }
@@ -252,10 +268,12 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
             R.id.imageButtonB -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
+                        p0.isPressed = !p0.isPressed
                         sp.play(idB, 1F, 1F, 1, 0, 1F)
                         changeAnimation(animations[sortedList["spec"]])
                     }
                     MotionEvent.ACTION_UP -> {
+                        p0.isPressed = !p0.isPressed
                         changeAnimation(animations[sortedList["idle"]])
                     }
                 }

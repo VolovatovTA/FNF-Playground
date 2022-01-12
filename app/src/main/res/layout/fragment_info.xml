@@ -41,6 +41,6 @@
         android:scaleType="fitStart"
         android:layout_weight="30"
         android:background="#0000"
-        android:src="@drawable/back" />
+        android:src="@drawable/back_btn" />
 
 </LinearLayout>
