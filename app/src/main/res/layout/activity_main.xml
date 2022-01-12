@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/stageback"
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="com.example.fnfplayground.FullscreenFragmentChooseCharacter"
+        android:id="@+id/fragmentContainerView2"
+        android:name="com.example.fnfplayground.IntroFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

@@ -11,9 +11,13 @@
         <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/drawable/left_arrow.xml" value="0.2703125" />
         <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/drawable/right_arrow.xml" value="0.2703125" />
         <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/drawable/up_arrow.xml" value="0.2703125" />
+        <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout-land/activity_main.xml" value="0.1" />
+        <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout-land/fragment_fullscreen_choose_character.xml" value="0.1" />
         <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
         <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout/fragment_character_actions.xml" value="0.25416666666666665" />
-        <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout/fragment_fullscreen_choose_character.xml" value="0.24010416666666667" />
+        <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout/fragment_fullscreen_choose_character.xml" value="0.4" />
+        <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout/fragment_info.xml" value="0.25416666666666665" />
+        <entry key="..\:/PROJECTS/FNFPlayground/app/src/main/res/layout/fragment_intro.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
