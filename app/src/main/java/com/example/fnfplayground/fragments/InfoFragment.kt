@@ -1,4 +1,4 @@
-package com.example.fnfplayground
+package com.example.fnfplayground.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

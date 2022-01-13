@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/stageback"
     android:gravity="center|top"
-    tools:context=".InfoFragment">
+    tools:context=".fragments.InfoFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ImageView

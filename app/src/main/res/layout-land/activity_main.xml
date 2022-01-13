@@ -10,7 +10,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView2"
-        android:name="com.example.fnfplayground.IntroFragment"
+        android:name="com.example.fnfplayground.fragments.IntroFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

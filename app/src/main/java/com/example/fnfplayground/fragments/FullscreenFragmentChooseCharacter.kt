@@ -1,4 +1,4 @@
-package com.example.fnfplayground
+package com.example.fnfplayground.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.fnfplayground.adapters.ModCharactersIconsAdapter
+import com.example.fnfplayground.adapters.OfficialCharactersIconsAdapter
+import com.example.fnfplayground.R
 import com.example.fnfplayground.databinding.FragmentFullscreenChooseCharacterBinding
-
-import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow.OnScrollPositionListener
 
 
 class FullscreenFragmentChooseCharacter : Fragment() {
@@ -56,9 +57,12 @@ class FullscreenFragmentChooseCharacter : Fragment() {
             Log.d("DebugAnimation", "name of char = ${adapterOfficialCharacters
                 .arrayListCharactersFolders[position].split(".")[0]}")
 
-            transaction.replace(R.id.fragmentContainerView2, CharacterActionsFragment
-                .newInstance(adapterOfficialCharacters.arrayListCharactersFolders[position]
-                    .split(".")[0], false))
+            transaction.replace(
+                R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(
+                    adapterOfficialCharacters.arrayListCharactersFolders[position]
+                        .split(".")[0], false
+                )
+            )
 
             transaction.addToBackStack("1")
             transaction.commit()
@@ -69,9 +73,12 @@ class FullscreenFragmentChooseCharacter : Fragment() {
             Log.d("DebugAnimation", "name of char = ${adapterModCharacters
                 .arrayListCharactersFolders[position].split(".")[0]}")
 
-            transaction.replace(R.id.fragmentContainerView2, CharacterActionsFragment
-                .newInstance(adapterModCharacters.arrayListCharactersFolders[position]
-                    .split(".")[0], true))
+            transaction.replace(
+                R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(
+                    adapterModCharacters.arrayListCharactersFolders[position]
+                        .split(".")[0], true
+                )
+            )
 
             transaction.addToBackStack("1")
             transaction.commit()

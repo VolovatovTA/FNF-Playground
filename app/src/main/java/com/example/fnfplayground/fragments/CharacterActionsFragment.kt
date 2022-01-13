@@ -1,4 +1,4 @@
-package com.example.fnfplayground
+package com.example.fnfplayground.fragments
 
 
 import android.annotation.SuppressLint
@@ -13,6 +13,9 @@ import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.get
 import androidx.fragment.app.Fragment
+import com.example.fnfplayground.creators.ActionsCharacter
+import com.example.fnfplayground.creators.CreatorCharacterData
+import com.example.fnfplayground.R
 import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
 import java.io.IOException
 

@@ -1,17 +1,9 @@
 package com.example.fnfplayground
 
-import android.content.Context
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
-import android.view.WindowManager
 import android.content.Intent
-
-
+import com.example.fnfplayground.services.ServiceForMusic
 
 
 class MainActivity : AppCompatActivity() {

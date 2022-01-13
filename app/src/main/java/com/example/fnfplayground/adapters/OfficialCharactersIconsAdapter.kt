@@ -1,4 +1,4 @@
-package com.example.fnfplayground
+package com.example.fnfplayground.adapters
 
 import android.content.Context
 import android.graphics.BitmapFactory

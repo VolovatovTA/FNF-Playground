@@ -1,4 +1,4 @@
-package com.example.fnfplayground
+package com.example.fnfplayground.services
 
 import android.app.Service
 import android.content.Intent
@@ -7,8 +7,7 @@ import android.widget.Toast
 
 
 import android.media.MediaPlayer
-
-
+import com.example.fnfplayground.R
 
 
 class ServiceForMusic : Service() {

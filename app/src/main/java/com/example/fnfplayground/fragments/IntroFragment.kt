@@ -1,4 +1,4 @@
-package com.example.fnfplayground
+package com.example.fnfplayground.fragments
 
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.fnfplayground.R
 import com.example.fnfplayground.databinding.FragmentIntroBinding
 
 

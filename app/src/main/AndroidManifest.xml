@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FNFPlayground">
         <service
-            android:name=".ServiceForMusic"
+            android:name=".services.ServiceForMusic"
             android:enabled="true"
             android:exported="true"></service>
 

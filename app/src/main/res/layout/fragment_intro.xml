@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/stageback"
     android:orientation="vertical"
-    tools:context=".IntroFragment">
+    tools:context=".fragments.IntroFragment">
 
     <ImageView
         android:id="@+id/imageView"
