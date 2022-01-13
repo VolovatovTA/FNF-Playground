@@ -6,11 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CharacterActionsFragment"
     android:background="@drawable/stageback">
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:background="@drawable/stagefront"/>
+        >
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="bottom"
+            android:scaleType="fitXY"
+            android:src="@drawable/stagefront"/>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,16 +34,14 @@
             android:id="@+id/CharacterImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:layout_marginVertical="190dp"
             android:gravity="bottom"
-            android:scaleX=".8"
-            android:scaleY=".8"
-            android:src="@drawable/pico_down_note0000"
+            android:scaleType="fitCenter"
+            android:scaleY="0.5"
+            android:scaleX="0.5"
+            android:src="@drawable/picodance0000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
             android:id="@+id/imageButtonLeft"

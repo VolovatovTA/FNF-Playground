@@ -6,11 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CharacterActionsFragment"
     android:background="@drawable/stageback">
-    <FrameLayout
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:background="@drawable/stagefront"/>
+        >
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.3"
+            android:gravity="bottom"
+            android:scaleType="fitXY"
+            android:src="@drawable/stagefront"/>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,10 +34,12 @@
 
         <ImageView
             android:id="@+id/CharacterImageView"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/mom"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:src="@drawable/pico_down_note0000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
