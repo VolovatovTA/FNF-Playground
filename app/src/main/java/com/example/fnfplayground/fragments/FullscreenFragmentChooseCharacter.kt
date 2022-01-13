@@ -70,13 +70,20 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         coverFlowModCharacter.setOnItemClickListener { _, _, position, _ ->
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            Log.d("DebugAnimation", "name of char = ${adapterModCharacters
-                .arrayListCharactersFolders[position].split(".")[0]}")
+            val nameCharacter =
+                try{
+                    adapterModCharacters
+                        .arrayListCharactersFolders[position].split(".")[0]
+                } catch (e: Throwable){
+                    adapterModCharacters
+                        .arrayListCharactersFolders.first().split(".")[0]
+
+                }
+            Log.d("DebugAnimation", "name of char = $nameCharacter")
 
             transaction.replace(
                 R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(
-                    adapterModCharacters.arrayListCharactersFolders[position]
-                        .split(".")[0], true
+                    nameCharacter = nameCharacter, true
                 )
             )
 

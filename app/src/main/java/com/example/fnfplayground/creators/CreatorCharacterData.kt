@@ -55,14 +55,16 @@ class CreatorCharacterData(
                 "path = $FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}"
             )
             if (fileNamesForOneAnim != null) {
-                var nextNumberOfPhoto = fileNamesForOneAnim[0]
+                var previousNumberOfPhoto = fileNamesForOneAnim[0]
                 for (fileName in fileNamesForOneAnim) {
 
                     Log.d("DebugAnimation",
                         "fileName = $fileName"
                     )
-                    val duration_coefficiemt = nextNumberOfPhoto.split(".")[0].takeLast(4).toInt() - fileName.split(".")[0].takeLast(4).toInt()
-
+                    val duration_coefficiemt = fileName.split(".")[0].takeLast(4).toInt() - previousNumberOfPhoto.split(".")[0].takeLast(4).toInt()
+                    Log.d("DebugAnimation",
+                        "durationK = $duration_coefficiemt"
+                    )
                     val inputStream = context.assets
                         .open("$FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}/$fileName")
                     val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -71,7 +73,7 @@ class CreatorCharacterData(
                         BitmapDrawable(context.resources, bitmap)
                         , DEFAULT_DURATION*duration_coefficiemt
                     )
-                    nextNumberOfPhoto = fileName
+                    previousNumberOfPhoto = fileName
                 }
 
             }

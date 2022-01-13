@@ -19,18 +19,21 @@ class ServiceForMusic : Service() {
     }
 
     override fun onCreate() {
-        Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show()
         player = MediaPlayer.create(this, R.raw.title1)
         player!!.isLooping = true // зацикливаем
     }
 
     override fun onDestroy() {
-        Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show()
+
         player!!.stop()
     }
 
     override fun onStart(intent: Intent?, startid: Int) {
-        Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show()
-        player!!.start()
+        val r = Runnable {
+            player!!.start()
+
+        }
+        val t = Thread(r)
+        t.start()
     }
 }
