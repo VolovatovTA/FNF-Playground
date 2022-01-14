@@ -62,6 +62,16 @@
             android:scaleType="fitCenter"
             android:layout_margin="32dp"
 />
+
+        <ImageButton
+            android:id="@+id/buttonSettings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#0000"
+            android:scaleType="fitCenter"
+            android:src="@drawable/settings"
+            android:layout_margin="32dp"/>
     </LinearLayout>
 
 </LinearLayout>

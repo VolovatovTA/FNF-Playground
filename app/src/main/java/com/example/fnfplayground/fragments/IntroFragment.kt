@@ -71,6 +71,9 @@ class IntroFragment : Fragment() {
             transaction.addToBackStack("1")
             transaction.commit()
         }
+        binding.button2.setOnClickListener {
+
+        }
 
 
         return binding.root
