@@ -4,6 +4,8 @@ package com.example.fnfplayground.fragments
 import android.annotation.SuppressLint
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
+import android.media.AudioManager
+import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,12 +29,16 @@ private const val ARG_MODE = "mode flag"
 class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     private var character: String? = null
     private var mode: Boolean? = null
-        private lateinit var currentAnimation: AnimationDrawable
+    private lateinit var currentAnimation: AnimationDrawable
     private lateinit var creatorCharacterData: CreatorCharacterData
+    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
+    var idSound = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
+
         arguments?.let {
             character = it.getString(ARG_CHARACTER)
             mode = it.getBoolean(ARG_MODE)
@@ -100,6 +106,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
         binding.imageButtonDown.setOnTouchListener(this)
         binding.imageButtonUp.setOnTouchListener(this)
         binding.imageButtonB.setOnTouchListener(this)
+        binding.imageButtonBack.setOnTouchListener(this)
 
 
 
@@ -120,6 +127,20 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
         p0!!.performClick()
         when (p0.id) {
+            R.id.imageButtonBack -> {
+                when (p1!!.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        p0.isPressed = !p0.isPressed
+                        soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        p0.isPressed = !p0.isPressed
+                        requireActivity().onBackPressed()
+
+
+                    }
+                }
+            }
             R.id.imageButtonLeft -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {

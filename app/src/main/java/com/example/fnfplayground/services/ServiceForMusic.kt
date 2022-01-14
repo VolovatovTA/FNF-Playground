@@ -20,7 +20,8 @@ class ServiceForMusic : Service() {
 
     override fun onCreate() {
         player = MediaPlayer.create(this, R.raw.title1)
-        player!!.isLooping = true // зацикливаем
+        player?.isLooping = true // зацикливаем
+        player?.setVolume(0.3f, 0.3f)
     }
 
     override fun onDestroy() {

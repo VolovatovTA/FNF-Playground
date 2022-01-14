@@ -50,6 +50,7 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         coverFlowModCharacter.adapter = adapterModCharacters
 
         coverFlowOfficialCharacter.setReflectionOpacity(0)
+        coverFlowModCharacter.setReflectionOpacity(0)
 
         coverFlowOfficialCharacter.setOnItemClickListener { _, _, position, _ ->
 

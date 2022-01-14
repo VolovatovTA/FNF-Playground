@@ -3,6 +3,9 @@ package com.example.fnfplayground.fragments
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.BitmapDrawable
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.SoundPool
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +18,10 @@ import com.example.fnfplayground.databinding.FragmentIntroBinding
 class IntroFragment : Fragment() {
 
     lateinit var binding: FragmentIntroBinding
+    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
+    var idSound = 0
     override fun onCreate(savedInstanceState: Bundle?) {
+        idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
         super.onCreate(savedInstanceState)
 
     }
@@ -47,6 +53,7 @@ class IntroFragment : Fragment() {
         binding.imageView.setImageDrawable(animation)
         animation.start()
         binding.button.setOnClickListener {
+            soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
 
             transaction.replace(R.id.fragmentContainerView2, FullscreenFragmentChooseCharacter())
@@ -55,6 +62,8 @@ class IntroFragment : Fragment() {
             transaction.commit()
         }
         binding.button2.setOnClickListener {
+            soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
+
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
 
             transaction.replace(R.id.fragmentContainerView2, InfoFragment())
