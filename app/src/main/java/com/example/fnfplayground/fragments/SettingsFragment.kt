@@ -18,13 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fnfplayground.R
 import com.example.fnfplayground.databinding.FragmentSettingsBinding
 import com.example.fnfplayground.services.ServiceForMusic
-import kotlin.math.roundToInt
 
 
 class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     lateinit var binding: FragmentSettingsBinding
-    val TAG = "DebugAnimation"
+
     lateinit var service: ServiceForMusic
+    lateinit var sCon: ServiceConnection
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
     val APP_PREFERENCES = "mySettings"
@@ -32,40 +32,45 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     val APP_PREFERENCES_VOLUME_MUSIC = "volumeMusic"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
 
-        val sCon = object: ServiceConnection {
+        sCon = object: ServiceConnection {
             override fun onServiceConnected(p0: ComponentName?, p1: IBinder) {
-                Log.d(TAG, "onServiceConnection")
                 service = (p1 as ServiceForMusic.BinderMusic).service
+
             }
 
             override fun onServiceDisconnected(p0: ComponentName?) {
-                Log.d(TAG, "onServiceDisconnection")
             }
 
         }
-        requireActivity().bindService(
+
+        activity?.bindService(
             Intent(requireContext(), ServiceForMusic::class.java),
-            sCon, 0
+            sCon, AppCompatActivity.BIND_AUTO_CREATE
         )
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         val settings = requireActivity().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        Log.d(TAG, "p = ${settings.getFloat(APP_PREFERENCES_VOLUME_MUSIC, 30f)}")
+
 
         binding.seekBarMusicVolume.progress = (settings.getFloat(APP_PREFERENCES_VOLUME_MUSIC, 30f)*100).toInt()
         binding.seekBarSoundsVolume.progress = (settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 10f)*10).toInt()
 
+
         binding.seekBarMusicVolume.setOnSeekBarChangeListener(this)
         binding.seekBarSoundsVolume.setOnSeekBarChangeListener(this)
+
         binding.imageButtonBack.setOnClickListener {
             soundPool.play(
                 idSound,
@@ -76,13 +81,11 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
                 1f
             )
 
-            Log.d(TAG, "p = ${binding.seekBarMusicVolume.progress}")
             val editor = settings.edit()
             editor.putFloat(APP_PREFERENCES_VOLUME_MUSIC, binding.seekBarMusicVolume.progress.toFloat()/100)
             editor.putFloat(APP_PREFERENCES_VOLUME_SOUNDS, binding.seekBarSoundsVolume.progress.toFloat()/10)
             editor.apply()
 
-            Log.d(TAG, "requireActivity().onBackPressedDispatcher.hasEnabledCallbacks() = ${requireActivity().onBackPressedDispatcher.hasEnabledCallbacks()}")
 
             activity?.onBackPressed()
         }
@@ -109,6 +112,12 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     }
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        requireActivity().unbindService(sCon)
     }
 
 }

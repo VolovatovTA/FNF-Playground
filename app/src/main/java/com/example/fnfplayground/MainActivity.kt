@@ -8,31 +8,28 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
 import com.example.fnfplayground.services.ServiceForMusic
-
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 
 class MainActivity : AppCompatActivity() {
-    val APP_PREFERENCES = "mySettings"
-    val TAG = "DebugAnimation"
     lateinit var service: ServiceForMusic
     private lateinit var sCon : ServiceConnection
+    private lateinit var mAdView : AdView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(TAG, "MainActivity onCreate")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sCon = object: ServiceConnection {
             override fun onServiceConnected(p0: ComponentName?, p1: IBinder) {
-                Log.d(TAG, "onServiceConnection")
                 service = (p1 as ServiceForMusic.BinderMusic).service
-                Log.d(TAG, "service = $service")
-
-
             }
 
             override fun onServiceDisconnected(p0: ComponentName?) {
-                Log.d(TAG, "onServiceDisconnection")
             }
 
         }
@@ -40,15 +37,39 @@ class MainActivity : AppCompatActivity() {
 
         bindService(
             Intent(baseContext, ServiceForMusic::class.java),
-            sCon, 0
+            sCon, BIND_AUTO_CREATE
         )
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        val loadAd = mAdView.loadAd(adRequest)
+        mAdView.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
 
+            override fun onAdFailedToLoad(adError : LoadAdError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            override fun onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            override fun onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        }
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "MainActivity onDestroy")
-
         unbindService(sCon)
+        stopService(Intent(this, ServiceForMusic::class.java))
         super.onDestroy()
     }
 

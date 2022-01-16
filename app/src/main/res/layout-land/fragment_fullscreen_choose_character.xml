@@ -28,15 +28,17 @@
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="55sp" />
+
         <GridView
             android:id="@+id/coverFlowOfficialCharacters"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:numColumns="6"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
+            android:columnWidth="85dp"
 
 
-            />
+            android:numColumns="auto_fit" />
 
 
 

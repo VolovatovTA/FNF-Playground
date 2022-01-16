@@ -8,55 +8,59 @@
     tools:context=".fragments.SettingsFragment">
 
 
-    <TextView
-        android:id="@+id/textViewMusicVolume"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fontFamily="@font/vcr"
-        android:textSize="25sp"
-        android:layout_margin="16dp"
-        android:textColor="@color/white"
-        android:layout_weight="3"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textViewMusicVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/vcr"
+                android:textSize="25sp"
+                android:layout_margin="16dp"
+                android:textColor="@color/white"
 
-        android:text="music volume" />
+                android:text="music volume" />
 
-    <SeekBar
-        android:id="@+id/seekBarMusicVolume"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:layout_weight="3"
+            <SeekBar
+                android:id="@+id/seekBarMusicVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
 
-        />
+                />
 
-    <TextView
-        android:id="@+id/textViewSoundsVolume"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:fontFamily="@font/vcr"
-        android:textSize="25sp"
-        android:layout_margin="16dp"
-        android:textColor="@color/white"
-        android:text="sounds of buttons volume" />
+            <TextView
+                android:id="@+id/textViewSoundsVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/vcr"
+                android:textSize="25sp"
+                android:layout_margin="16dp"
+                android:textColor="@color/white"
+                android:text="sounds of buttons volume" />
 
-    <SeekBar
-        android:id="@+id/seekBarSoundsVolume"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:max="@integer/max_volume"
-        android:layout_margin="16dp"/>
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.3"/>
+            <SeekBar
+                android:id="@+id/seekBarSoundsVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="@integer/max_volume"
+                android:layout_margin="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
     <ImageButton
         android:id="@+id/imageButtonBack"
         android:soundEffectsEnabled="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2.7"
+        android:layout_weight="7"
         android:layout_gravity="left"
         android:scaleType="fitStart"
         android:background="#0000"

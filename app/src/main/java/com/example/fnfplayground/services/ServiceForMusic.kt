@@ -19,8 +19,6 @@ import kotlin.properties.Delegates
 
 class ServiceForMusic : Service(), Runnable {
 
-    val TAG = "DebugAnimation"
-    val CHANNEL_ID = "1003"
     var isPlayingMusic = false
     var player: MediaPlayer? = null
     val APP_PREFERENCES = "mySettings"
@@ -35,13 +33,15 @@ class ServiceForMusic : Service(), Runnable {
     }
 
 
+    override fun onRebind(intent: Intent?) {
+        super.onRebind(intent)
+
+    }
     override fun onBind(intent: Intent?): BinderMusic {
-        Log.d(TAG, "ServiceForMusic onBind")
         return BinderMusic()
     }
 
     override fun onCreate() {
-        Log.d(TAG, "ServiceForMusic onCreate")
 
         val settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         volumeMusic = settings.getFloat(APP_PREFERENCES_VOLUME_MUSIC, 0.3f)
@@ -53,7 +53,6 @@ class ServiceForMusic : Service(), Runnable {
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "ServiceForMusic onDestroy")
 
         player!!.stop()
         player = null
@@ -63,26 +62,17 @@ class ServiceForMusic : Service(), Runnable {
     }
 
     override fun onStart(intent: Intent?, startid: Int) {
-        Log.d(TAG, "ServiceForMusic onStart")
-//        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-//            .setContentTitle("My notification")
-//            .setContentText("Much longer text that cannot fit one line...")
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//        startForeground(1003, notification.build())
 
         if (!isPlayingMusic){
             t?.start()
         }
 
-        Log.d(TAG, "y = $t")
-        Log.d(TAG, "y = ${t?.isAlive}")
-
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        Log.d(TAG, "ServiceForMusic onUnbind")
 
-        return super.onUnbind(intent)
+
+        return true
     }
 
 
