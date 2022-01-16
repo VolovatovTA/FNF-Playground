@@ -43,7 +43,8 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/button"
+            android:id="@+id/buttonPlay"
+            android:soundEffectsEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="32dp"
@@ -53,9 +54,10 @@
             android:scaleType="fitCenter" />
 
         <ImageButton
-            android:id="@+id/button2"
+            android:id="@+id/buttonInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:soundEffectsEnabled="false"
             android:layout_weight="1"
             android:background="#0000"
             android:src="@drawable/info_btn"
@@ -67,6 +69,7 @@
             android:id="@+id/buttonSettings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:soundEffectsEnabled="false"
             android:layout_weight="1"
             android:background="#0000"
             android:scaleType="fitCenter"

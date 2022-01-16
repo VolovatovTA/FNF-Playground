@@ -24,15 +24,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:fontFamily="@font/vtc_garage_sale_outlined"
-            android:lines="2"
-            android:text="Official\n characters"
+            android:text="characters"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="55sp" />
-        <it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow
+        <GridView
             android:id="@+id/coverFlowOfficialCharacters"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:numColumns="6"
             android:layout_weight="1"
 
 
@@ -41,38 +41,6 @@
 
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="8dp"
-        android:background="@drawable/stageback"
-
-        android:layout_weight="1">
-        <TextView
-            android:id="@+id/twModChar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:fontFamily="@font/vtc_garage_sale_outlined"
-            android:lines="2"
-            android:text="Mod\n characters"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="55sp" />
-        <it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow
-            android:id="@+id/coverFlowModCharacters"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-
-            />
-    </LinearLayout>
-
-
-
-
 
 
 </LinearLayout>

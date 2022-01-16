@@ -44,13 +44,9 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         val adapterModCharacters = ModCharactersIconsAdapter(requireContext())
 
         val coverFlowOfficialCharacter = binding.coverFlowOfficialCharacters
-        val coverFlowModCharacter = binding.coverFlowModCharacters
 
         coverFlowOfficialCharacter.adapter = adapterOfficialCharacters
-        coverFlowModCharacter.adapter = adapterModCharacters
 
-        coverFlowOfficialCharacter.setReflectionOpacity(0)
-        coverFlowModCharacter.setReflectionOpacity(0)
 
         coverFlowOfficialCharacter.setOnItemClickListener { _, _, position, _ ->
 
@@ -68,29 +64,7 @@ class FullscreenFragmentChooseCharacter : Fragment() {
             transaction.addToBackStack("1")
             transaction.commit()
         }
-        coverFlowModCharacter.setOnItemClickListener { _, _, position, _ ->
 
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            val nameCharacter =
-                try{
-                    adapterModCharacters
-                        .arrayListCharactersFolders[position].split(".")[0]
-                } catch (e: Throwable){
-                    adapterModCharacters
-                        .arrayListCharactersFolders.first().split(".")[0]
-
-                }
-            Log.d("DebugAnimation", "name of char = $nameCharacter")
-
-            transaction.replace(
-                R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(
-                    nameCharacter = nameCharacter, true
-                )
-            )
-
-            transaction.addToBackStack("1")
-            transaction.commit()
-        }
 
     }
 

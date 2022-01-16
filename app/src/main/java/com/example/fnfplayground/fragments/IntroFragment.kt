@@ -1,12 +1,14 @@
 package com.example.fnfplayground.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.BitmapDrawable
-import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +18,20 @@ import com.example.fnfplayground.databinding.FragmentIntroBinding
 
 
 class IntroFragment : Fragment() {
+    val TAG = "DebugAnimation"
 
     lateinit var binding: FragmentIntroBinding
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
+    var volume = 0f
+    val APP_PREFERENCES = "mySettings"
+    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
+    lateinit var settings : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
+        settings = requireActivity().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
+
+
         super.onCreate(savedInstanceState)
 
     }
@@ -52,8 +62,8 @@ class IntroFragment : Fragment() {
         }
         binding.imageView.setImageDrawable(animation)
         animation.start()
-        binding.button.setOnClickListener {
-            soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
+        binding.buttonPlay.setOnClickListener {
+            soundPool.play(idSound, volume, volume, 1, 0, 1f)
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
 
             transaction.replace(R.id.fragmentContainerView2, FullscreenFragmentChooseCharacter())
@@ -61,8 +71,11 @@ class IntroFragment : Fragment() {
             transaction.addToBackStack("1")
             transaction.commit()
         }
-        binding.button2.setOnClickListener {
-            soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
+        volume = settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 1f)
+        Log.d(TAG, "IntroFragment vol = ${settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 1f)}")
+        Log.d(TAG, "IntroFragment vol = $volume")
+        binding.buttonInfo.setOnClickListener {
+            soundPool.play(idSound, volume, volume, 1, 0, 1f)
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
 
@@ -71,7 +84,13 @@ class IntroFragment : Fragment() {
             transaction.addToBackStack("1")
             transaction.commit()
         }
-        binding.button2.setOnClickListener {
+        binding.buttonSettings.setOnClickListener {
+            soundPool.play(idSound, volume, volume, 1, 0, 1f)
+
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainerView2, SettingsFragment())
+            transaction.addToBackStack("")
+            transaction.commit()
 
         }
 

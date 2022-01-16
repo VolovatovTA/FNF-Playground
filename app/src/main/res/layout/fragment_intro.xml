@@ -30,7 +30,8 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <ImageButton
-        android:id="@+id/button"
+        android:id="@+id/buttonPlay"
+        android:soundEffectsEnabled="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="24dp"
@@ -44,7 +45,7 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
-        android:id="@+id/button2"
+        android:id="@+id/buttonInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.2"
@@ -52,15 +53,15 @@
         android:src="@drawable/info_btn"
         android:scaleType="fitCenter"
         android:background="#0000"
-
-
+        android:soundEffectsEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
-        android:id="@+id/imageView4"
+        android:id="@+id/buttonSettings"
+        android:soundEffectsEnabled="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.3"
