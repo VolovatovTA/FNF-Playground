@@ -1,5 +1,6 @@
 package com.example.fnfplayground.fragments
 
+import android.content.Context
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
@@ -15,16 +16,29 @@ class InfoFragment : Fragment() {
     lateinit var binding: FragmentInfoBinding
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
+    val APP_PREFERENCES = "mySettings"
+    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val volume = requireActivity()
+            .getSharedPreferences(
+                APP_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+            .getFloat(
+                APP_PREFERENCES_VOLUME_SOUNDS,
+                1f
+            )
+
         binding = FragmentInfoBinding.inflate(inflater, container, false)
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
 
         binding.imageButton.setOnClickListener {
 
-            soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
+            soundPool.play(idSound, volume, volume, 1, 0, 1f)
 
             requireActivity().onBackPressed()
         }

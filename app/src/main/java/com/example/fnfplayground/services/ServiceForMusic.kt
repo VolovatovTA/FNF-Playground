@@ -19,6 +19,7 @@ import kotlin.properties.Delegates
 
 class ServiceForMusic : Service(), Runnable {
 
+    val TAG = "DebugAnimation"
     var isPlayingMusic = false
     var player: MediaPlayer? = null
     val APP_PREFERENCES = "mySettings"
@@ -32,11 +33,10 @@ class ServiceForMusic : Service(), Runnable {
             get() = this@ServiceForMusic
     }
 
-
     override fun onRebind(intent: Intent?) {
         super.onRebind(intent)
-
     }
+
     override fun onBind(intent: Intent?): BinderMusic {
         return BinderMusic()
     }
@@ -53,28 +53,21 @@ class ServiceForMusic : Service(), Runnable {
     }
 
     override fun onDestroy() {
-
         player!!.stop()
         player = null
         t?.interrupt()
         t = null
-
     }
 
     override fun onStart(intent: Intent?, startid: Int) {
-
         if (!isPlayingMusic){
             t?.start()
         }
-
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-
-
         return true
     }
-
 
     override fun run() {
         isPlayingMusic = true

@@ -18,7 +18,6 @@ import com.example.fnfplayground.databinding.FragmentIntroBinding
 
 
 class IntroFragment : Fragment() {
-    val TAG = "DebugAnimation"
 
     lateinit var binding: FragmentIntroBinding
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
@@ -72,8 +71,6 @@ class IntroFragment : Fragment() {
             transaction.commit()
         }
         volume = settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 1f)
-        Log.d(TAG, "IntroFragment vol = ${settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 1f)}")
-        Log.d(TAG, "IntroFragment vol = $volume")
         binding.buttonInfo.setOnClickListener {
             soundPool.play(idSound, volume, volume, 1, 0, 1f)
 

@@ -1,5 +1,8 @@
 package com.example.fnfplayground.fragments
 
+import android.content.Context
+import android.media.AudioManager
+import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,7 +20,10 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
     private var fullscreenContent: View? = null
     private var fullscreenContentControls: View? = null
-
+    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
+    var idSound = 0
+    val APP_PREFERENCES = "mySettings"
+    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
     private var _binding: FragmentFullscreenChooseCharacterBinding? = null
 
     // This property is only valid between onCreateView and
@@ -38,25 +44,34 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
+        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext())
+        val gridViewCharacters = binding.coverFlowOfficialCharacters
+        gridViewCharacters.adapter = adapterCharacters
 
-
-        val adapterOfficialCharacters = OfficialCharactersIconsAdapter(requireContext())
-        val adapterModCharacters = ModCharactersIconsAdapter(requireContext())
-
-        val coverFlowOfficialCharacter = binding.coverFlowOfficialCharacters
-
-        coverFlowOfficialCharacter.adapter = adapterOfficialCharacters
-
-
-        coverFlowOfficialCharacter.setOnItemClickListener { _, _, position, _ ->
+        val volume = requireActivity()
+            .getSharedPreferences(
+                APP_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+            .getFloat(
+                APP_PREFERENCES_VOLUME_SOUNDS,
+                1f
+            )
+        gridViewCharacters.setOnItemClickListener { _, _, position, _ ->
+            soundPool.play(idSound, volume, volume, 1, 0, 1f)
 
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            Log.d("DebugAnimation", "name of char = ${adapterOfficialCharacters
-                .arrayListCharactersFolders[position].split(".")[0]}")
+            Log.d(
+                "DebugAnimation", "name of char = ${
+                    adapterCharacters
+                        .arrayListCharactersFolders[position].split(".")[0]
+                }"
+            )
 
             transaction.replace(
                 R.id.fragmentContainerView2, CharacterActionsFragment.newInstance(
-                    adapterOfficialCharacters.arrayListCharactersFolders[position]
+                    adapterCharacters.arrayListCharactersFolders[position]
                         .split(".")[0], false
                 )
             )

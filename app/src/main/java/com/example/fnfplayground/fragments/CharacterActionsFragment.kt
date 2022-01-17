@@ -2,6 +2,7 @@ package com.example.fnfplayground.fragments
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.media.AudioManager
@@ -33,6 +34,8 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     private lateinit var creatorCharacterData: CreatorCharacterData
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
+    val APP_PREFERENCES = "mySettings"
+    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,13 +128,22 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
 
 
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+        val volume = requireActivity()
+            .getSharedPreferences(
+                APP_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+            .getFloat(
+                APP_PREFERENCES_VOLUME_SOUNDS,
+                1f
+            )
         p0!!.performClick()
         when (p0.id) {
             R.id.imageButtonBack -> {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        soundPool.play(idSound, 1f, 1f, 1, 0, 1f)
+                        soundPool.play(idSound, volume, volume, 1, 0, 1f)
                     }
                     MotionEvent.ACTION_UP -> {
                         p0.isPressed = !p0.isPressed

@@ -15,6 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.fnfplayground.MyViewModel
 import com.example.fnfplayground.R
 import com.example.fnfplayground.databinding.FragmentSettingsBinding
 import com.example.fnfplayground.services.ServiceForMusic
@@ -22,9 +24,8 @@ import com.example.fnfplayground.services.ServiceForMusic
 
 class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     lateinit var binding: FragmentSettingsBinding
+    lateinit var viewModel: MyViewModel
 
-    lateinit var service: ServiceForMusic
-    lateinit var sCon: ServiceConnection
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
     val APP_PREFERENCES = "mySettings"
@@ -35,23 +36,9 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
 
         super.onCreate(savedInstanceState)
 
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
-
-        sCon = object: ServiceConnection {
-            override fun onServiceConnected(p0: ComponentName?, p1: IBinder) {
-                service = (p1 as ServiceForMusic.BinderMusic).service
-
-            }
-
-            override fun onServiceDisconnected(p0: ComponentName?) {
-            }
-
-        }
-
-        activity?.bindService(
-            Intent(requireContext(), ServiceForMusic::class.java),
-            sCon, AppCompatActivity.BIND_AUTO_CREATE
-        )
 
     }
     override fun onCreateView(
@@ -96,7 +83,7 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
 
         when (p0?.id){
             R.id.seekBarMusicVolume ->{
-                service.player?.setVolume(p1 / 100f, p1 / 100f)
+                viewModel.service?.player?.setVolume(p1 / 100f, p1 / 100f)
             }
             R.id.seekBarSoundsVolume -> {
                 val volume = p0.progress.toFloat()/p0.max
@@ -114,10 +101,5 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     override fun onStopTrackingTouch(p0: SeekBar?) {
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        requireActivity().unbindService(sCon)
-    }
 
 }

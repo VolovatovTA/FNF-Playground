@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.fnfplayground.services.ServiceForMusic
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -14,31 +17,16 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 
 class MainActivity : AppCompatActivity() {
-    lateinit var service: ServiceForMusic
-    private lateinit var sCon : ServiceConnection
+    val TAG = "DebugAnimation"
+    lateinit var viewModel: MyViewModel
     private lateinit var mAdView : AdView
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        sCon = object: ServiceConnection {
-            override fun onServiceConnected(p0: ComponentName?, p1: IBinder) {
-                service = (p1 as ServiceForMusic.BinderMusic).service
-            }
-
-            override fun onServiceDisconnected(p0: ComponentName?) {
-            }
-
-        }
-        startService(Intent(baseContext, ServiceForMusic::class.java))
-
-        bindService(
-            Intent(baseContext, ServiceForMusic::class.java),
-            sCon, BIND_AUTO_CREATE
-        )
+        viewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        viewModel.playMusic()
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         val loadAd = mAdView.loadAd(adRequest)
@@ -67,10 +55,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        unbindService(sCon)
-        stopService(Intent(this, ServiceForMusic::class.java))
-        super.onDestroy()
+    private var exit = false
+    override fun onBackPressed() {
+        if(supportFragmentManager.backStackEntryCount == 0){
+            if (exit) {
+                viewModel.service?.player?.stop()
+
+                viewModel.service?.stopService(viewModel.intent_)
+
+                finish() // finish activity
+            } else {
+                Toast.makeText(
+                    this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                exit = true
+                Handler().postDelayed( { exit = false }, 3 * 1000)
+            }
+        }
+        else super.onBackPressed()
+
     }
 
 
