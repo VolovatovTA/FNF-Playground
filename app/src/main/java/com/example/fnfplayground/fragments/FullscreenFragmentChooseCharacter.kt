@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.fnfplayground.adapters.ModCharactersIconsAdapter
 import com.example.fnfplayground.adapters.OfficialCharactersIconsAdapter
 import com.example.fnfplayground.R
+import com.example.fnfplayground.config.Prefs
 import com.example.fnfplayground.databinding.FragmentFullscreenChooseCharacterBinding
 
 
@@ -22,8 +23,6 @@ class FullscreenFragmentChooseCharacter : Fragment() {
     private var fullscreenContentControls: View? = null
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
-    val APP_PREFERENCES = "mySettings"
-    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
     private var _binding: FragmentFullscreenChooseCharacterBinding? = null
 
     // This property is only valid between onCreateView and
@@ -51,13 +50,17 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
         val volume = requireActivity()
             .getSharedPreferences(
-                APP_PREFERENCES,
+                Prefs.APP_PREFERENCES,
                 Context.MODE_PRIVATE
             )
             .getFloat(
-                APP_PREFERENCES_VOLUME_SOUNDS,
+                Prefs.APP_PREFERENCES_VOLUME_SOUNDS_BUTTONS,
                 1f
             )
+        _binding?.imageButtonBack?.setOnClickListener {
+            soundPool.play(idSound, volume, volume, 1, 0, 1f)
+            requireActivity().onBackPressed()
+        }
         gridViewCharacters.setOnItemClickListener { _, _, position, _ ->
             soundPool.play(idSound, volume, volume, 1, 0, 1f)
 

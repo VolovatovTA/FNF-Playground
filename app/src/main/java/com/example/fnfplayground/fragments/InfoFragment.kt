@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fnfplayground.R
+import com.example.fnfplayground.config.Prefs
 import com.example.fnfplayground.databinding.FragmentInfoBinding
 
 class InfoFragment : Fragment() {
@@ -16,8 +17,6 @@ class InfoFragment : Fragment() {
     lateinit var binding: FragmentInfoBinding
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
-    val APP_PREFERENCES = "mySettings"
-    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,11 +24,11 @@ class InfoFragment : Fragment() {
     ): View? {
         val volume = requireActivity()
             .getSharedPreferences(
-                APP_PREFERENCES,
+                Prefs.APP_PREFERENCES,
                 Context.MODE_PRIVATE
             )
             .getFloat(
-                APP_PREFERENCES_VOLUME_SOUNDS,
+                Prefs.APP_PREFERENCES_VOLUME_SOUNDS_BUTTONS,
                 1f
             )
 

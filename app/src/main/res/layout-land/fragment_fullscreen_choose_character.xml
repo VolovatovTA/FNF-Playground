@@ -32,13 +32,23 @@
         <GridView
             android:id="@+id/coverFlowOfficialCharacters"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:columnWidth="85dp"
 
 
             android:numColumns="auto_fit" />
+        <ImageButton
+            android:id="@+id/imageButtonBack"
+            android:soundEffectsEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:layout_gravity="left"
+            android:scaleType="fitStart"
+            android:background="#0000"
+            android:src="@drawable/back_btn" />
 
 
 

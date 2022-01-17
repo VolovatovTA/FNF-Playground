@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.fnfplayground.R
+import com.example.fnfplayground.config.Prefs
 import com.example.fnfplayground.databinding.FragmentIntroBinding
 
 
@@ -23,11 +24,9 @@ class IntroFragment : Fragment() {
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
     var volume = 0f
-    val APP_PREFERENCES = "mySettings"
-    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
     lateinit var settings : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
-        settings = requireActivity().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        settings = requireActivity().getSharedPreferences(Prefs.APP_PREFERENCES, Context.MODE_PRIVATE)
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
 
 
@@ -70,7 +69,7 @@ class IntroFragment : Fragment() {
             transaction.addToBackStack("1")
             transaction.commit()
         }
-        volume = settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 1f)
+        volume = settings.getFloat(Prefs.APP_PREFERENCES_VOLUME_SOUNDS_BUTTONS, 1f)
         binding.buttonInfo.setOnClickListener {
             soundPool.play(idSound, volume, volume, 1, 0, 1f)
 

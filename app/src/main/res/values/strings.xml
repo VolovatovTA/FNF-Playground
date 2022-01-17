@@ -4,4 +4,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="characters_sounds_volume">characters sounds volume</string>
+    <string name="sounds_of_buttons_volume">sounds of buttons volume</string>
+    <string name="music_volume">music volume</string>
 </resources>

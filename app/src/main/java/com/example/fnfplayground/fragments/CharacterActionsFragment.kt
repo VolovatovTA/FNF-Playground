@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import com.example.fnfplayground.creators.ActionsCharacter
 import com.example.fnfplayground.creators.CreatorCharacterData
 import com.example.fnfplayground.R
+import com.example.fnfplayground.config.Prefs
 import com.example.fnfplayground.databinding.FragmentCharacterActionsBinding
 import java.io.IOException
 
@@ -34,14 +35,22 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     private lateinit var creatorCharacterData: CreatorCharacterData
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
     var idSound = 0
-    val APP_PREFERENCES = "mySettings"
-    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
+    var volumeCharacters = 0f
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
 
+        volumeCharacters = requireActivity()
+            .getSharedPreferences(
+                Prefs.APP_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+            .getFloat(
+                Prefs.APP_PREFERENCES_VOLUME_SOUNDS_CHARACTERS,
+                1f
+            )
         arguments?.let {
             character = it.getString(ARG_CHARACTER)
             mode = it.getBoolean(ARG_MODE)
@@ -130,11 +139,11 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
         val volume = requireActivity()
             .getSharedPreferences(
-                APP_PREFERENCES,
+                Prefs.APP_PREFERENCES,
                 Context.MODE_PRIVATE
             )
             .getFloat(
-                APP_PREFERENCES_VOLUME_SOUNDS,
+                Prefs.APP_PREFERENCES_VOLUME_SOUNDS_BUTTONS,
                 1f
             )
         p0!!.performClick()
@@ -157,7 +166,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        creatorCharacterData.play(ActionsCharacter.LEFT)
+                        creatorCharacterData.play(ActionsCharacter.LEFT, volumeCharacters)
                         changeAnimation(ActionsCharacter.LEFT)
                     }
                     MotionEvent.ACTION_UP -> {
@@ -172,7 +181,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
 
-                        creatorCharacterData.play(ActionsCharacter.DOWN)
+                        creatorCharacterData.play(ActionsCharacter.DOWN, volumeCharacters)
                         changeAnimation(ActionsCharacter.DOWN)
                     }
                     MotionEvent.ACTION_UP -> {
@@ -186,7 +195,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        creatorCharacterData.play(ActionsCharacter.RIGHT)
+                        creatorCharacterData.play(ActionsCharacter.RIGHT, volumeCharacters)
                         changeAnimation(ActionsCharacter.RIGHT)
                     }
                     MotionEvent.ACTION_UP -> {
@@ -199,7 +208,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        creatorCharacterData.play(ActionsCharacter.UP)
+                        creatorCharacterData.play(ActionsCharacter.UP, volumeCharacters)
                         changeAnimation(ActionsCharacter.UP)
                     }
                     MotionEvent.ACTION_UP -> {
@@ -212,7 +221,7 @@ class CharacterActionsFragment : Fragment(), View.OnTouchListener {
                 when (p1!!.action) {
                     MotionEvent.ACTION_DOWN -> {
                         p0.isPressed = !p0.isPressed
-                        creatorCharacterData.play(ActionsCharacter.SPEC)
+                        creatorCharacterData.play(ActionsCharacter.SPEC, volumeCharacters)
                         changeAnimation(ActionsCharacter.SPEC)
                     }
                     MotionEvent.ACTION_UP -> {

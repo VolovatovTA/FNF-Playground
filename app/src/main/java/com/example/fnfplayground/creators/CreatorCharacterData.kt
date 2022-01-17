@@ -113,8 +113,8 @@ class CreatorCharacterData(
 
     }
 
-    fun play(action: ActionsCharacter) {
+    fun play(action: ActionsCharacter, volume: Float) {
 
-        soundsId[action]?.let { sp.play(it, 1F, 1F, 1, 0, 1F) }
+        soundsId[action]?.let { sp.play(it, volume, volume, 1, 0, 1F) }
     }
 }

@@ -14,6 +14,7 @@ import android.os.Binder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.fnfplayground.R
+import com.example.fnfplayground.config.Prefs
 import kotlin.properties.Delegates
 
 
@@ -22,8 +23,6 @@ class ServiceForMusic : Service(), Runnable {
     val TAG = "DebugAnimation"
     var isPlayingMusic = false
     var player: MediaPlayer? = null
-    val APP_PREFERENCES = "mySettings"
-    val APP_PREFERENCES_VOLUME_MUSIC = "volumeMusic"
     var volumeMusic by Delegates.notNull<Float>()
     var t : Thread? = Thread(this)
 
@@ -43,8 +42,8 @@ class ServiceForMusic : Service(), Runnable {
 
     override fun onCreate() {
 
-        val settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        volumeMusic = settings.getFloat(APP_PREFERENCES_VOLUME_MUSIC, 0.3f)
+        val settings = getSharedPreferences(Prefs.APP_PREFERENCES, Context.MODE_PRIVATE)
+        volumeMusic = settings.getFloat(Prefs.APP_PREFERENCES_VOLUME_MUSIC, 0.3f)
 
         player = MediaPlayer.create(this, R.raw.title1)
         player?.isLooping = true // зацикливаем

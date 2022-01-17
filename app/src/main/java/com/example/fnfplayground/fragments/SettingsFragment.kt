@@ -1,25 +1,19 @@
 package com.example.fnfplayground.fragments
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Bundle
-import android.os.IBinder
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.fnfplayground.MyViewModel
 import com.example.fnfplayground.R
+import com.example.fnfplayground.config.Prefs
 import com.example.fnfplayground.databinding.FragmentSettingsBinding
-import com.example.fnfplayground.services.ServiceForMusic
 
 
 class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
@@ -27,10 +21,8 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
     lateinit var viewModel: MyViewModel
 
     val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
-    var idSound = 0
-    val APP_PREFERENCES = "mySettings"
-    val APP_PREFERENCES_VOLUME_SOUNDS = "volumeSounds"
-    val APP_PREFERENCES_VOLUME_MUSIC = "volumeMusic"
+    var idSoundButtons = 0
+    var idSoundCharacters = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -38,7 +30,8 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
 
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-        idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
+        idSoundButtons = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
+        idSoundCharacters = soundPool.load(requireContext(), R.raw.example_down_bf, 1)
 
     }
     override fun onCreateView(
@@ -48,19 +41,21 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        val settings = requireActivity().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        val settings = requireActivity().getSharedPreferences(Prefs.APP_PREFERENCES, Context.MODE_PRIVATE)
 
 
-        binding.seekBarMusicVolume.progress = (settings.getFloat(APP_PREFERENCES_VOLUME_MUSIC, 30f)*100).toInt()
-        binding.seekBarSoundsVolume.progress = (settings.getFloat(APP_PREFERENCES_VOLUME_SOUNDS, 10f)*10).toInt()
+        binding.seekBarMusicVolume.progress = (settings.getFloat(Prefs.APP_PREFERENCES_VOLUME_MUSIC, 30f)*100).toInt()
+        binding.seekBarSoundsVolume.progress = (settings.getFloat(Prefs.APP_PREFERENCES_VOLUME_SOUNDS_BUTTONS, 10f)*10).toInt()
+        binding.seekBarSoundsCharactersVolume.progress = (settings.getFloat(Prefs.APP_PREFERENCES_VOLUME_SOUNDS_CHARACTERS, 10f)*10).toInt()
 
 
         binding.seekBarMusicVolume.setOnSeekBarChangeListener(this)
         binding.seekBarSoundsVolume.setOnSeekBarChangeListener(this)
+        binding.seekBarSoundsCharactersVolume.setOnSeekBarChangeListener(this)
 
         binding.imageButtonBack.setOnClickListener {
             soundPool.play(
-                idSound,
+                idSoundButtons,
                 binding.seekBarSoundsVolume.progress.toFloat()/10,
                 binding.seekBarSoundsVolume.progress.toFloat()/10,
                 1,
@@ -69,8 +64,9 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
             )
 
             val editor = settings.edit()
-            editor.putFloat(APP_PREFERENCES_VOLUME_MUSIC, binding.seekBarMusicVolume.progress.toFloat()/100)
-            editor.putFloat(APP_PREFERENCES_VOLUME_SOUNDS, binding.seekBarSoundsVolume.progress.toFloat()/10)
+            editor.putFloat(Prefs.APP_PREFERENCES_VOLUME_MUSIC, binding.seekBarMusicVolume.progress.toFloat()/100)
+            editor.putFloat(Prefs.APP_PREFERENCES_VOLUME_SOUNDS_BUTTONS, binding.seekBarSoundsVolume.progress.toFloat()/10)
+            editor.putFloat(Prefs.APP_PREFERENCES_VOLUME_SOUNDS_CHARACTERS, binding.seekBarSoundsCharactersVolume.progress.toFloat()/10)
             editor.apply()
 
 
@@ -88,7 +84,13 @@ class SettingsFragment : Fragment(), SeekBar.OnSeekBarChangeListener {
             R.id.seekBarSoundsVolume -> {
                 val volume = p0.progress.toFloat()/p0.max
 
-                soundPool.play(idSound, volume, volume, 1, 0, 1f)
+                soundPool.play(idSoundButtons, volume, volume, 1, 0, 1f)
+
+            }
+            R.id.seekBarSoundsCharactersVolume -> {
+                val volume = p0.progress.toFloat()/p0.max
+
+                soundPool.play(idSoundCharacters, volume, volume, 1, 0, 1f)
 
             }
         }

@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="1"
-        android:layout_margin="8dp"
         android:background="@drawable/stageback"
         >
 
@@ -37,10 +36,21 @@
 
 
             />
+        <ImageButton
+            android:id="@+id/imageButtonBack"
+            android:soundEffectsEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:layout_gravity="left"
+            android:scaleType="fitStart"
+            android:background="#0000"
+            android:src="@drawable/back_btn" />
 
 
 
     </LinearLayout>
+
 
 
 </LinearLayout>
