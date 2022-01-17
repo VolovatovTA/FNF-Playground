@@ -1,18 +1,13 @@
 package com.example.fnfplayground.services
 
-import android.app.IntentService
-import android.app.Notification
+
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
-import android.widget.Toast
-
-
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import com.example.fnfplayground.R
 import com.example.fnfplayground.config.Prefs
 import kotlin.properties.Delegates
@@ -33,14 +28,20 @@ class ServiceForMusic : Service(), Runnable {
     }
 
     override fun onRebind(intent: Intent?) {
+        Log.d(TAG, "onRebind")
+
         super.onRebind(intent)
     }
 
     override fun onBind(intent: Intent?): BinderMusic {
+        Log.d(TAG, "onBind")
+
         return BinderMusic()
     }
 
     override fun onCreate() {
+        Log.d(TAG, "onCreate")
+
 
         val settings = getSharedPreferences(Prefs.APP_PREFERENCES, Context.MODE_PRIVATE)
         volumeMusic = settings.getFloat(Prefs.APP_PREFERENCES_VOLUME_MUSIC, 0.3f)
@@ -52,6 +53,7 @@ class ServiceForMusic : Service(), Runnable {
     }
 
     override fun onDestroy() {
+        Log.d(TAG, "onDestroy")
         player!!.stop()
         player = null
         t?.interrupt()
@@ -59,12 +61,16 @@ class ServiceForMusic : Service(), Runnable {
     }
 
     override fun onStart(intent: Intent?, startid: Int) {
+        Log.d(TAG, "onStart")
+
         if (!isPlayingMusic){
             t?.start()
         }
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
+        Log.d(TAG, "onUnbind")
+
         return true
     }
 

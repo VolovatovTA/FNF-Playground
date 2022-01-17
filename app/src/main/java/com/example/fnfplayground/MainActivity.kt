@@ -1,16 +1,12 @@
 package com.example.fnfplayground
 
-import android.content.ComponentName
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Handler
-import android.os.IBinder
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.fnfplayground.services.ServiceForMusic
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -26,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
-        viewModel.playMusic()
+        viewModel.playMusicIfItNotPlaying(application)
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         val loadAd = mAdView.loadAd(adRequest)
@@ -55,13 +51,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        Log.d(TAG, "onAttachedToWindow")
+    }
+
+    override fun onResume() {
+        Log.d(TAG, "onResume")
+        viewModel.playMusicIfItNotPlaying(application)
+
+        super.onResume()
+    }
+
+    
+    override fun onUserLeaveHint() {
+        Log.d(TAG, "onUserLeaveHint")
+
+        viewModel.pauseMusic()
+
+        super.onUserLeaveHint()
+    }
+
+
     private var exit = false
+
     override fun onBackPressed() {
         if(supportFragmentManager.backStackEntryCount == 0){
             if (exit) {
-                viewModel.service?.player?.stop()
 
-                viewModel.service?.stopService(viewModel.intent_)
+                viewModel.pauseMusic()
 
                 finish() // finish activity
             } else {
