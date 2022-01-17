@@ -48,23 +48,13 @@ class CreatorCharacterData(
                 context.assets.list("$FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}")
             animations[nameAction] = AnimationDrawable()
             animations[nameAction]?.isOneShot = nameAction != ActionsCharacter.IDLE
-            Log.d("DebugAnimation",
-                "nameAction = $nameAction"
-            )
-            Log.d("DebugAnimation",
-                "path = $FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}"
-            )
+
             if (fileNamesForOneAnim != null) {
                 var previousNumberOfPhoto = fileNamesForOneAnim[0]
                 for (fileName in fileNamesForOneAnim) {
 
-                    Log.d("DebugAnimation",
-                        "fileName = $fileName"
-                    )
                     val duration_coefficiemt = fileName.split(".")[0].takeLast(4).toInt() - previousNumberOfPhoto.split(".")[0].takeLast(4).toInt()
-                    Log.d("DebugAnimation",
-                        "durationK = $duration_coefficiemt"
-                    )
+
                     val inputStream = context.assets
                         .open("$FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}/$fileName")
                     val bitmap = BitmapFactory.decodeStream(inputStream)

@@ -4,13 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
 
 class MainActivity : AppCompatActivity() {
     val TAG = "DebugAnimation"
@@ -25,30 +22,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.playMusicIfItNotPlaying(application)
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
-        val loadAd = mAdView.loadAd(adRequest)
-        mAdView.adListener = object: AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
+        mAdView.loadAd(adRequest)
 
-            override fun onAdFailedToLoad(adError : LoadAdError) {
-                // Code to be executed when an ad request fails.
-            }
 
-            override fun onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        }
     }
 
 
@@ -64,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    
+
     override fun onUserLeaveHint() {
         Log.d(TAG, "onUserLeaveHint")
 
