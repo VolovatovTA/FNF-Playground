@@ -74,26 +74,26 @@ class CreatorCharacterData(
 
         val sortedList : MutableMap<ActionsCharacter, String> = HashMap(list.size)
         for (i in list) {
-            if (i.contains("idle") || i.contains("IDLE") || i.contains("Idle")) {
+            if (i.contains("idle") || i.contains("IDLE") || i.contains("Idle") || i.contains("I")) {
                 sortedList[ActionsCharacter.IDLE]= i
                 Log.d("DebugAnimation", i)
 
             }
-            if (i.contains("spec") || i.contains("SPEC") || i.contains("Spec")) {
+            if (i.contains("spec") || i.contains("SPEC") || i.contains("Spec")|| i.contains("S")) {
                 sortedList[ActionsCharacter.SPEC] = i
                 Log.d("DebugAnimation", i)
 
             }
-            if (i.contains("left") || i.contains("LEFT") || i.contains("Left")) {
+            if (i.contains("left") || i.contains("LEFT") || i.contains("Left")|| i.contains("L")) {
                 sortedList[ActionsCharacter.LEFT] = i
             }
-            if (i.contains("right") || i.contains("RIGHT") || i.contains("Right")) {
+            if (i.contains("right") || i.contains("RIGHT") || i.contains("Right")|| i.contains("R")) {
                 sortedList[ActionsCharacter.RIGHT] = i
             }
-            if (i.contains("up") || i.contains("UP") || i.contains("Up")) {
+            if (i.contains("up") || i.contains("UP") || i.contains("Up") || i.contains("U")) {
                 sortedList[ActionsCharacter.UP] = i
             }
-            if (i.contains("down") || i.contains("DOWN") || i.contains("Down")) {
+            if (i.contains("down") || i.contains("DOWN") || i.contains("Down")|| i.contains("D")) {
                 sortedList[ActionsCharacter.DOWN] = i
             }
 

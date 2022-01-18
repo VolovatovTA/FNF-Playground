@@ -7,4 +7,8 @@
     <string name="characters_sounds_volume">characters sounds volume</string>
     <string name="sounds_of_buttons_volume">sounds of buttons volume</string>
     <string name="music_volume">music volume</string>
+    <string name="text_info">\tThis playground of Friday Night Funking was developed by me.
+        Please enjoy and be bless!
+        \n\tDevelopers: VolovatovTA, AleksKo.
+        \n\tAnimation designers: Not Found..</string>
 </resources>

@@ -9,7 +9,6 @@
     android:gravity="center|top"
     tools:context=".fragments.InfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
@@ -23,15 +22,23 @@
         android:layout_margin="8dp"
         android:background="@color/black"/>
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:layout_margin="8dp"
-        android:text="Здесь будет какой-то текст, может длинный, а может и нет. Вроде чего-то разработалось"
-        android:fontFamily="@font/vcr"
         android:layout_weight="10"
-        android:textSize="25sp"/>
+        android:layout_margin="8dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/text_info"
+            android:lines="50"
+            android:fontFamily="@font/vcr"
+            android:textSize="25sp"/>
+    </ScrollView>
+
+
+
 
     <ImageButton
         android:id="@+id/imageButton"
