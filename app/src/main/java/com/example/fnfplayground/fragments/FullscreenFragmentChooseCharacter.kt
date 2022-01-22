@@ -22,38 +22,26 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
 const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 
+// фрагмент выбора персонажа
 class FullscreenFragmentChooseCharacter : Fragment() {
 
-    private var mInterstitialAd: InterstitialAd? = null
-    private var mAdIsLoading: Boolean = false
-    var characterName = ""
-    private var TAG = "DebugAnimation"
-    private var fullscreenContent: View? = null
-    private var fullscreenContentControls: View? = null
-    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
-    var idSound = 0
+    private var mInterstitialAd: InterstitialAd? = null // реклама
+    private var mAdIsLoading: Boolean = false // флаг загрузки рекламы
+    var characterName = "" // имя персонажа
+    private var TAG = "DebugAnimation" // для дебага
+    private var fullscreenContent: View? = null // вью рекламы
+    private var fullscreenContentControls: View? = null // контроллер рекламы
+    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100) // звук кнопки
+    // (подготовка к проигрыванию)
+    var idSound = 0 // id по котрой программа поймёт какую зхапись воспроизводить
     private var _binding: FragmentFullscreenChooseCharacterBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-
-        _binding = FragmentFullscreenChooseCharacterBinding
-            .inflate(inflater, container, false)
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Initialize the Mobile Ads SDK.
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+// Initialize the Mobile Ads SDK.
         MobileAds.initialize(requireContext()) {}
 
         // Set your test devices. Check your logcat output for the hashed device ID to
@@ -66,9 +54,31 @@ class FullscreenFragmentChooseCharacter : Fragment() {
                 .build()
         )
 
-//        // Create the "retry" button, which triggers an interstitial between game plays.
-//        retry_button.visibility = View.INVISIBLE
-//        retry_button.setOnClickListener { showInterstitial() }
+    }
+    // метод который вызывается при создании View в нём прописана основная логика
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+
+
+        _binding = FragmentFullscreenChooseCharacterBinding
+            .inflate(inflater, container, false)
+
+        if (!mAdIsLoading && mInterstitialAd == null) {
+            mAdIsLoading = true
+            loadAd()
+
+        }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
         val adapterCharacters = OfficialCharactersIconsAdapter(requireContext())
         val gridViewCharacters = binding.coverFlowOfficialCharacters
@@ -91,12 +101,6 @@ class FullscreenFragmentChooseCharacter : Fragment() {
             soundPool.play(idSound, volume, volume, 1, 0, 1f)
             characterName =  adapterCharacters.arrayListCharactersFolders[position]
                 .split(".")[0]
-            if (!mAdIsLoading && mInterstitialAd == null) {
-                mAdIsLoading = true
-                loadAd()
-
-            }
-
         }
 
     }
@@ -117,7 +121,6 @@ class FullscreenFragmentChooseCharacter : Fragment() {
                     Log.d(TAG, "Ad was loaded.")
                     mInterstitialAd = interstitialAd
                     mAdIsLoading = false
-                    showInterstitial()
                 }
             }
         )
