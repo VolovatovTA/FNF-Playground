@@ -24,6 +24,7 @@ const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 
 class FullscreenFragmentChooseCharacter : Fragment() {
 
+    var isItemsClickable = true
     private var mInterstitialAd: InterstitialAd? = null
     private var mAdIsLoading: Boolean = false
     var characterName = ""
@@ -36,6 +37,32 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(requireContext()) {}
+
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("ABCDEF012345"))
+                .build()
+        )
+
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!mAdIsLoading && mInterstitialAd == null) {
+            mAdIsLoading = true
+            loadAd()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,26 +80,19 @@ class FullscreenFragmentChooseCharacter : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(requireContext()) {}
 
-        // Set your test devices. Check your logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-        // to get test ads on this device."
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf("ABCDEF012345"))
-                .build()
-        )
-
-//        // Create the "retry" button, which triggers an interstitial between game plays.
-//        retry_button.visibility = View.INVISIBLE
-//        retry_button.setOnClickListener { showInterstitial() }
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
-        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext())
+
+        val widthIcon = binding.root.width.div(3)
+        val heightIcon = binding.root.height.div(5)
+        Log.d(TAG, "width = $widthIcon")
+        Log.d(TAG, "height = $heightIcon")
+        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext(), widthIcon, heightIcon)
         val gridViewCharacters = binding.coverFlowOfficialCharacters
         gridViewCharacters.adapter = adapterCharacters
+
+
+
 
         val volume = requireActivity()
             .getSharedPreferences(
@@ -88,14 +108,16 @@ class FullscreenFragmentChooseCharacter : Fragment() {
             requireActivity().onBackPressed()
         }
         gridViewCharacters.setOnItemClickListener { _, _, position, _ ->
-            soundPool.play(idSound, volume, volume, 1, 0, 1f)
-            characterName =  adapterCharacters.arrayListCharactersFolders[position]
-                .split(".")[0]
-            if (!mAdIsLoading && mInterstitialAd == null) {
-                mAdIsLoading = true
-                loadAd()
+            if (isItemsClickable){
+                soundPool.play(idSound, volume, volume, 1, 0, 1f)
+                characterName =  adapterCharacters.arrayListCharactersFolders[position]
+                    .split(".")[0]
+                showInterstitial()
+                isItemsClickable = false
 
             }
+
+
 
         }
 
@@ -110,6 +132,8 @@ class FullscreenFragmentChooseCharacter : Fragment() {
                     Log.d(TAG, adError.message)
                     mInterstitialAd = null
                     mAdIsLoading = false
+                    isItemsClickable = true
+
 
                 }
 
@@ -117,7 +141,11 @@ class FullscreenFragmentChooseCharacter : Fragment() {
                     Log.d(TAG, "Ad was loaded.")
                     mInterstitialAd = interstitialAd
                     mAdIsLoading = false
-                    showInterstitial()
+                    isItemsClickable = true
+
+
+
+
                 }
             }
         )

@@ -53,7 +53,8 @@ class CreatorCharacterData(
                 var previousNumberOfPhoto = fileNamesForOneAnim[0]
                 for (fileName in fileNamesForOneAnim) {
 
-                    val duration_coefficiemt = fileName.split(".")[0].takeLast(4).toInt() - previousNumberOfPhoto.split(".")[0].takeLast(4).toInt()
+                    val duration_coefficiemt = fileName.split(".")[0].takeLast(3)
+                        .toInt() - previousNumberOfPhoto.split(".")[0].takeLast(3).toInt()
 
                     val inputStream = context.assets
                         .open("$FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}/$fileName")

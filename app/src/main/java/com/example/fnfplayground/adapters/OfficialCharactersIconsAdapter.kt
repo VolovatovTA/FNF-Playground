@@ -10,7 +10,7 @@ import android.widget.BaseAdapter
 import android.widget.FrameLayout
 import android.widget.ImageView
 
-class OfficialCharactersIconsAdapter(private val context: Context) : BaseAdapter() {
+class OfficialCharactersIconsAdapter(private val context: Context, val widthIcon: Int,val  heightIcon: Int, ) : BaseAdapter() {
     var arrayListCharactersFolders : Array<String> = context.assets.list("shared/official characters") as Array<String>
     private val icons = Array(arrayListCharactersFolders.size, init = {BitmapDrawable(context.resources)})
 
@@ -39,7 +39,7 @@ class OfficialCharactersIconsAdapter(private val context: Context) : BaseAdapter
     override fun getView(position: Int, p1: View?, p2: ViewGroup?): View {
         val imageView = ImageView(context)
         imageView.setImageDrawable(icons[position] as Drawable)
-        imageView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, 150)
+//        imageView.layoutParams = FrameLayout.LayoutParams(widthIcon, heightIcon)
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
         return imageView
