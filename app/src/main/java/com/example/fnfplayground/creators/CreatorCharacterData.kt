@@ -8,81 +8,103 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.util.Log
 
+// class for load the animation and sounds of one character from assets package in memory
 class CreatorCharacterData(
-    val context: Context,
-    private val character: String,
-    val isItMod: Boolean
+    val context: Context, // base class of app. it need to interact with assets file and load
+    // something in memory
+    character: String, // name of character for whom CreatorCharacterData load the data
+    isItMod: Boolean // deprecated variable which need to determine official or mod character
 ) {
-    var FILE_PATH_TO_ANIMATIONS: String
+
+    var FILE_PATH_TO_ANIMATIONS: String // path in assets to package with animation
 
     val FILE_PATH_TO_MOD_ANIMATIONS = "shared/mod characters/"
     val FILE_PATH_TO_OFFICIAL_ANIMATIONS = "shared/official characters/"
-    private val DEFAULT_DURATION = 30 // ms
+    private val DEFAULT_DURATION = 30 // duration between two adjacent frames, ms
 
-    val sp = SoundPool(2, AudioManager.STREAM_MUSIC, 1)
+    val sp = SoundPool(2, AudioManager.STREAM_MUSIC, 1) // class for play
+    // short sounds
 
-    var animations: MutableMap<ActionsCharacter, AnimationDrawable> = mutableMapOf()
+    var animations: MutableMap<ActionsCharacter, AnimationDrawable> = mutableMapOf() // map
+    // of animations
     var soundsId: MutableMap<ActionsCharacter, Int> = mutableMapOf()
-    private var sortedListAnimations: MutableMap<ActionsCharacter, String>
+    private var sortedListAnimations: MutableMap<ActionsCharacter, String> // sorted by names of
+    // actions map of animations
     private var sortedListSounds: MutableMap<ActionsCharacter, String>
 
     init {
+
         FILE_PATH_TO_ANIMATIONS = if (isItMod) FILE_PATH_TO_MOD_ANIMATIONS else FILE_PATH_TO_OFFICIAL_ANIMATIONS
 
+        // list of packages in directory "animations"
         val listOfNamesFilesInAnimations =
             context.assets.list("$FILE_PATH_TO_ANIMATIONS$character/animations") as Array<String>
         sortedListAnimations = sortList(listOfNamesFilesInAnimations)
 
+        // list of packages in directory "sounds"
         val listOfNamesFilesInSounds =
             context.assets.list("$FILE_PATH_TO_ANIMATIONS$character/sounds") as Array<String>
         sortedListSounds = sortList(listOfNamesFilesInSounds)
 
+        // load the sounds in memory and get the id for each sounds. id is needed to play sounds in
+        // the future
         for (s in sortedListSounds.keys){
-            soundsId[s] = sp.load(context.assets.openFd("$FILE_PATH_TO_ANIMATIONS$character/sounds/${sortedListSounds[s]}"), 1)
+            soundsId[s] = sp.load(context.assets.openFd("$FILE_PATH_TO_ANIMATIONS" +
+                    "$character/sounds/${sortedListSounds[s]}"), 1)
         }
 
-
+        // дальше буду на русском а то лень. для каждого из действий (вверх вниз и тд.)
+        // здесь загружаются анимации
         for (nameAction in sortedListAnimations.keys) {
-            // массив имён картинок для одной анимации
+            // тут получаем массив имён картинок для одной анимации
             val fileNamesForOneAnim =
-                context.assets.list("$FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}")
+                context.assets.list("$FILE_PATH_TO_ANIMATIONS$character/animations/" +
+                        "${sortedListAnimations[nameAction]}")
+                    // создаём пустую анимацию
             animations[nameAction] = AnimationDrawable()
+            // говорим чтобы она не повторялась, только если это не базовая анимаци idle
             animations[nameAction]?.isOneShot = nameAction != ActionsCharacter.IDLE
 
+            // если в папке есть хоть один файл добавляем из него кадры в анимацию для конкретного
+            // действия
             if (fileNamesForOneAnim != null) {
+                // предыдущий номер кадра нужен для определения задержки между кадрами
                 var previousNumberOfPhoto = fileNamesForOneAnim[0]
+                // пробегаемся по файлам циклом
                 for (fileName in fileNamesForOneAnim) {
-
-                    val duration_coefficiemt = fileName.split(".")[0].takeLast(4).toInt() - previousNumberOfPhoto.split(".")[0].takeLast(4).toInt()
-
+                    // считаем задержку исходя из имени файла
+                    val duration_coefficiemt = fileName.split(".")[0].takeLast(3)
+                        .toInt() - previousNumberOfPhoto.split(".")[0].takeLast(3).toInt()
+                    // получаем поток данных для одного файла
                     val inputStream = context.assets
                         .open("$FILE_PATH_TO_ANIMATIONS$character/animations/${sortedListAnimations[nameAction]}/$fileName")
+                    // делаем из этого потока матрицу
                     val bitmap = BitmapFactory.decodeStream(inputStream)
-
+                    // добавляем матрицу (кадр) в анимацию, с учётом задержки
                     animations[nameAction]?.addFrame(
                         BitmapDrawable(context.resources, bitmap)
                         , DEFAULT_DURATION*duration_coefficiemt
                     )
+                    // меняем предыдущий номер чтоб на следующем шаге опять можно было бы вычислить задержку
                     previousNumberOfPhoto = fileName
                 }
 
             }
         }
     }
-
+    // здесь проверяется наличие букв в названии файла и в зависимости от названия файла ему
+    // сопостовляется одно из действий
     private fun sortList(list: Array<String>) : MutableMap<ActionsCharacter, String> {
 
         val sortedList : MutableMap<ActionsCharacter, String> = HashMap(list.size)
+        // просто долгая проверка на то какие буквы содержит имя файла (i - это имя файла, в
+        // котором хранится кадр или звук)
         for (i in list) {
             if (i.contains("idle") || i.contains("IDLE") || i.contains("Idle") || i.contains("I")) {
                 sortedList[ActionsCharacter.IDLE]= i
-                Log.d("DebugAnimation", i)
-
             }
             if (i.contains("spec") || i.contains("SPEC") || i.contains("Spec")|| i.contains("S")) {
                 sortedList[ActionsCharacter.SPEC] = i
-                Log.d("DebugAnimation", i)
-
             }
             if (i.contains("left") || i.contains("LEFT") || i.contains("Left")|| i.contains("L")) {
                 sortedList[ActionsCharacter.LEFT] = i
