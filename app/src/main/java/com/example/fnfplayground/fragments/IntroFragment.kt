@@ -48,7 +48,8 @@ class IntroFragment : Fragment() {
             var previousNumberOfPhoto = fileNamesForOneAnim[0]
 
             for (i in fileNamesForOneAnim){
-                val duration_coefficiemt = i.split(".")[0].takeLast(4).toInt() - previousNumberOfPhoto.split(".")[0].takeLast(4).toInt()
+                val duration_coefficiemt = i.split(".")[0].takeLast(4)
+                    .toInt() - previousNumberOfPhoto.split(".")[0].takeLast(4).toInt()
 
                 val inputStream = requireContext().assets
                     .open("shared/logo bumpin/$i")

@@ -20,7 +20,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     var service: ServiceForMusic? = null
     val TAG = "DebugAnimation"
 
-    private var sCon : ServiceConnection // переменная соединения с ервером
+    private var sCon : ServiceConnection // переменная соединения с сервисом
     var intentForService : Intent =
         Intent(application.baseContext, ServiceForMusic::class.java)
     // класс для того, чтобы понять какой сервис запускать
