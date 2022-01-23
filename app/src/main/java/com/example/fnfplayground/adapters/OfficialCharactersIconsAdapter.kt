@@ -13,13 +13,15 @@ import android.widget.ImageView
 // класс который будет заниматься сбором иконок из папки assets и закидывает их в память в
 // момент инициализации. После инициализации он отвечает за распихивание иконок по нужным местам
 // в gridView.
-class OfficialCharactersIconsAdapter(private val context: Context) : BaseAdapter() {
+class OfficialCharactersIconsAdapter(private val context: Context,val heightIcon: Int,val widthIcon: Int) : BaseAdapter() {
     // получение списка всех персонажей (всех названий папок с персонажем)
     var arrayListCharactersFolders : Array<String> = context.assets.list("shared/official characters") as Array<String>
     // объявление списка иконок для отображения в gridView
     private val icons = Array(arrayListCharactersFolders.size, init = {BitmapDrawable(context.resources)})
 
+
     init {
+
         //
         for (i in arrayListCharactersFolders.indices){
             val nameIcon : Array<String> = context.assets.list("shared/official characters/${arrayListCharactersFolders[i]}/icon") as Array<String>
@@ -45,7 +47,11 @@ class OfficialCharactersIconsAdapter(private val context: Context) : BaseAdapter
     override fun getView(position: Int, p1: View?, p2: ViewGroup?): View {
         val imageView = ImageView(context)
         imageView.setImageDrawable(icons[position] as Drawable)
-//        imageView.layoutParams = FrameLayout.LayoutParams(widthIcon, heightIcon)
+        val layoutParams = FrameLayout.LayoutParams(heightIcon,widthIcon)
+        layoutParams.gravity = 0
+        imageView.layoutParams = layoutParams
+
+
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
         return imageView

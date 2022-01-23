@@ -27,6 +27,8 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
     var isItemsClickable = true
 
+    var columnCount = 3
+    var rawCount = 6
     private var mInterstitialAd: InterstitialAd? = null // реклама
     private var mAdIsLoading: Boolean = false // флаг загрузки рекламы
     var characterName = "" // имя персонажа
@@ -43,6 +45,10 @@ class FullscreenFragmentChooseCharacter : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Initialize the Mobile Ads SDK.
+        if (resources.displayMetrics.widthPixels > resources.displayMetrics.heightPixels){
+            columnCount = 5
+            rawCount = 3
+        }
         MobileAds.initialize(requireContext()) {}
 
         // Set your test devices. Check your logcat output for the hashed device ID to
@@ -95,13 +101,14 @@ class FullscreenFragmentChooseCharacter : Fragment() {
 
         idSound = soundPool.load(requireContext(), R.raw.scroll_menu, 1)
 
-        val widthIcon = binding.root.width.div(3)
-        val heightIcon = binding.root.height.div(5)
+        val widthIcon = resources.displayMetrics.widthPixels/columnCount
+        val heightIcon = resources.displayMetrics.heightPixels/rawCount
         Log.d(TAG, "width = $widthIcon")
         Log.d(TAG, "height = $heightIcon")
-        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext())
+        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext(), widthIcon, heightIcon)
         val gridViewCharacters = binding.coverFlowOfficialCharacters
         gridViewCharacters.adapter = adapterCharacters
+        gridViewCharacters.numColumns = columnCount
 
 
 
