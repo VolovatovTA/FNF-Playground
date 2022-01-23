@@ -10,11 +10,17 @@ import android.widget.BaseAdapter
 import android.widget.FrameLayout
 import android.widget.ImageView
 
-class OfficialCharactersIconsAdapter(private val context: Context, val widthIcon: Int,val  heightIcon: Int, ) : BaseAdapter() {
+// класс который будет заниматься сбором иконок из папки assets и закидывает их в память в
+// момент инициализации. После инициализации он отвечает за распихивание иконок по нужным местам
+// в gridView.
+class OfficialCharactersIconsAdapter(private val context: Context) : BaseAdapter() {
+    // получение списка всех персонажей (всех названий папок с персонажем)
     var arrayListCharactersFolders : Array<String> = context.assets.list("shared/official characters") as Array<String>
+    // объявление списка иконок для отображения в gridView
     private val icons = Array(arrayListCharactersFolders.size, init = {BitmapDrawable(context.resources)})
 
     init {
+        //
         for (i in arrayListCharactersFolders.indices){
             val nameIcon : Array<String> = context.assets.list("shared/official characters/${arrayListCharactersFolders[i]}/icon") as Array<String>
 

@@ -22,17 +22,20 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
 const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 
+// фрагмент выбора персонажа
 class FullscreenFragmentChooseCharacter : Fragment() {
 
     var isItemsClickable = true
-    private var mInterstitialAd: InterstitialAd? = null
-    private var mAdIsLoading: Boolean = false
-    var characterName = ""
-    private var TAG = "DebugAnimation"
-    private var fullscreenContent: View? = null
-    private var fullscreenContentControls: View? = null
-    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100)
-    var idSound = 0
+
+    private var mInterstitialAd: InterstitialAd? = null // реклама
+    private var mAdIsLoading: Boolean = false // флаг загрузки рекламы
+    var characterName = "" // имя персонажа
+    private var TAG = "DebugAnimation" // для дебага
+    private var fullscreenContent: View? = null // вью рекламы
+    private var fullscreenContentControls: View? = null // контроллер рекламы
+    val soundPool = SoundPool(4, AudioManager.STREAM_MUSIC, 100) // звук кнопки
+    // (подготовка к проигрыванию)
+    var idSound = 0 // id по котрой программа поймёт какую зхапись воспроизводить
     private var _binding: FragmentFullscreenChooseCharacterBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -64,6 +67,8 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         }
     }
 
+
+    // метод который вызывается при создании View в нём прописана основная логика
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,8 +76,15 @@ class FullscreenFragmentChooseCharacter : Fragment() {
     ): View {
 
 
+
         _binding = FragmentFullscreenChooseCharacterBinding
             .inflate(inflater, container, false)
+
+        if (!mAdIsLoading && mInterstitialAd == null) {
+            mAdIsLoading = true
+            loadAd()
+
+        }
 
         return binding.root
     }
@@ -87,7 +99,7 @@ class FullscreenFragmentChooseCharacter : Fragment() {
         val heightIcon = binding.root.height.div(5)
         Log.d(TAG, "width = $widthIcon")
         Log.d(TAG, "height = $heightIcon")
-        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext(), widthIcon, heightIcon)
+        val adapterCharacters = OfficialCharactersIconsAdapter(requireContext())
         val gridViewCharacters = binding.coverFlowOfficialCharacters
         gridViewCharacters.adapter = adapterCharacters
 
@@ -118,7 +130,6 @@ class FullscreenFragmentChooseCharacter : Fragment() {
             }
 
 
-
         }
 
     }
@@ -142,9 +153,6 @@ class FullscreenFragmentChooseCharacter : Fragment() {
                     mInterstitialAd = interstitialAd
                     mAdIsLoading = false
                     isItemsClickable = true
-
-
-
 
                 }
             }
